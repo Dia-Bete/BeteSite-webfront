@@ -29,7 +29,10 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    '@/assets/css/fonts.css',
+    '@/assets/css/elevations.css'
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -47,6 +50,7 @@ export default {
     '@nuxt/typescript-build',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/fontawesome'
   ],
   /*
    ** Nuxt.js modules
@@ -73,4 +77,12 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
+
+  fontawesome: {
+    icons: {
+      solid: ['faBars'],
+      regular: []
+    }
+  }
+
 }
