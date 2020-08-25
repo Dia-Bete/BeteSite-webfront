@@ -76,7 +76,14 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    postcss: {
+      plugins: {
+        'postcss-nesting': {},
+        'postcss-preset-env': { stage: 2 }
+      }
+    }
+  },
 
   fontawesome: {
     icons: {
@@ -84,5 +91,4 @@ export default {
       regular: []
     }
   }
-
 }
