@@ -31,7 +31,8 @@ export default {
    */
   css: [
     '@/assets/css/fonts.css',
-    '@/assets/css/elevations.css'
+    '@/assets/css/elevations.css',
+    '@/assets/css/buttons.css'
   ],
   /*
    ** Plugins to load before mounting the App

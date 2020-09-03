@@ -1,0 +1,12 @@
+.button-secondary {
+  @apply block rounded bg-blue-100 border-2 border-solid border-blue-600 text-blue-700 text-center py-2 font-display font-semibold text-lg;
+
+  &:hover,
+  &:focus {
+    @apply text-blue-800 border-blue-700;
+  }
+
+  &:focus {
+    @apply bg-blue-300;
+  }
+}
