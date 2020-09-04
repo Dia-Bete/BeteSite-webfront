@@ -26,7 +26,7 @@
         title="Dúvidas"
         description="Informações sobre diabetes preparadas por profissionais de saúde."
         action="Perguntar"
-        :icon-src="require('../assets/img/calculator.svg')"
+        :icon-src="require('../assets/img/question.svg')"
         anchor="/duvidas"
       />
     </div>
