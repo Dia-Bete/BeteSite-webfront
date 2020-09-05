@@ -1,0 +1,29 @@
+name: Github Pages CI
+
+on:
+  push:
+    branches: [ develop ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          persist-credentials: false
+    - name: Use Node.js v14
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - name: Generate static site
+      run: |
+        npm ci
+        npm run build
+        npm run generate
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@3.5.9
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: dist
+        
+
