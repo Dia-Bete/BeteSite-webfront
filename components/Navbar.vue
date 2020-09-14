@@ -3,7 +3,9 @@
     class="fixed z-40 top-0 w-screen bg-blue-200 py-2 px-2 grid grid-cols-3 grid-flow-col col-gap-1 items-baseline elevation-1"
   >
     <Logo />
-    <h1 class="font-display font-bold text-3xl text-center text-blue-900">Bete</h1>
+    <h1 class="font-display font-bold text-3xl text-center text-blue-900">
+      <nuxt-link to="/">Bete</nuxt-link>
+    </h1>
     <nav class="flex justify-end">
       <button class="px-2 py-1 lg:hidden" @click="toggleNavbar">
         <font-awesome-icon icon="bars" class="text-3xl" />
