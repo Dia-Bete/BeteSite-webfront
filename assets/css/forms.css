@@ -1,0 +1,23 @@
+.custom-radio {
+  @apply my-2;
+
+  & input[type='radio'] {
+    @apply hidden;
+  }
+  & label {
+    @apply cursor-pointer;
+  }
+  & .radio-decorator {
+    @apply inline-block w-6 h-6 rounded-full bg-blue-100 border-blue-400 border-2 text-base;
+  }
+  & [type='radio']:checked + .radio-decorator {
+    background: radial-gradient(
+      circle,
+      theme('colors.blue.800') 50%,
+      theme('colors.blue.100') 60%
+    );
+  }
+  & .radio-label {
+    @apply align-top ml-2;
+  }
+}

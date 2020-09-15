@@ -1,14 +1,10 @@
 export default {
   /*
-   ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
-   */
-  mode: 'spa',
-  /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
    */
   target: 'static',
+  ssr: true,
   router: {
     base: '/BeteSite-webfront/'
   },
@@ -27,7 +23,9 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+    ],
   },
   /*
    ** Global CSS
@@ -35,13 +33,16 @@ export default {
   css: [
     '@/assets/css/fonts.css',
     '@/assets/css/elevations.css',
-    '@/assets/css/buttons.css'
+    '@/assets/css/buttons.css',
+    '@/assets/css/forms.css'
   ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: [
+    '~/plugins/vue-formulate'
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

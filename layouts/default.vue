@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar />
-    <main class="mt-16">
+    <main class="mt-16 py-8 px-4">
       <Nuxt />
     </main>
   </div>
@@ -9,7 +9,7 @@
 
 <style>
 html {
-  font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
