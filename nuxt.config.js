@@ -32,7 +32,6 @@ export default {
    */
   css: [
     '@/assets/css/fonts.css',
-    '@/assets/css/elevations.css',
     '@/assets/css/buttons.css',
     '@/assets/css/forms.css'
   ],
@@ -65,13 +64,15 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt/content
-    '@nuxt/content',
+    // '@nuxt/content',
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'https://trusty-pipe-277616.rj.r.appspot.com'
+  },
   /*
    ** Content module configuration
    ** See https://content.nuxtjs.org/configuration

@@ -21,3 +21,9 @@
     @apply align-top ml-2;
   }
 }
+
+[data-classification='select'] {
+  & select[data-placeholder-selected='true'] {
+    @apply text-blue-700;
+  }
+}

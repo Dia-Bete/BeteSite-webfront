@@ -1,6 +1,6 @@
+<!-- TODO: mover classes CSS para vue-formulate.js e forms.css -->
 <template>
   <div>
-    <!-- TODO: mover classes CSS para vue-formulate.js e forms.css -->
     <div v-for="option in context.options" v-bind:key="option.id" class="custom-radio">
       <input
         type="radio"
