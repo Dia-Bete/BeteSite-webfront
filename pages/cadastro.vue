@@ -55,6 +55,15 @@
         validationName="Atividade"
         placeholder="escolha..."
       />
+      <FormulateInput
+        type="select"
+        name="is_diabetic"
+        :options="{ no_diabetic: 'Não', pre_diabetic: 'Pré-Diabetes', diabetes_1: 'Diabetes Tipo 1', diabetes_2: 'Diabetes Tipo 2', gestational_diabetes: 'Diabetes Gestacional', lada: 'LADA', mody: 'MODY', secondary: 'Diabetes Secundário à Doenças Específicas'}"
+        label="Tem Diabetes?"
+        validation="required"
+        validationName="Atividade"
+        placeholder="escolha..."
+      />
       <FormulateInput v-for="input in schema_conditions" :key="input.name" v-bind="input" />
     </fieldset>
     <fieldset>
@@ -82,7 +91,7 @@
 <style lang="postcss" scoped>
 fieldset {
   max-width: 50ch;
-  @apply rounded z-20 p-4 pt-6 bg-blue-200 shadow flex-grow justify-self-center w-full;
+  @apply rounded z-20 p-4 pt-6 bg-blue-200 shadow flex-grow justify-center w-full;
 
   & legend {
     @apply font-display font-semibold text-xl leading-6 pb-6;
@@ -187,12 +196,7 @@ export default Vue.extend({
           type: 'checkbox',
           name: 'physically_inactive',
           label: 'Sou portador de deficiência física',
-        },
-        {
-          type: 'checkbox',
-          name: 'is_diabetic',
-          label: 'Tenho diabetes',
-        },
+        }
       ],
     }
   },
