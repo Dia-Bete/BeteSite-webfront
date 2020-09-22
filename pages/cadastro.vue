@@ -213,8 +213,8 @@ export default Vue.extend({
       // TODO: Ajustar o backend para receber tudo em ints
       const height = (parseFloat(data.height) / 100).toString(10)
       try {
-        const response = await this.$axios.post('/signup', { ...data, height })
-        if (response.status === 201) {
+        const response = await this.$axios.post('/signup_api', { ...data, height })
+        if (response.status === 200) {
           alert('Conta criada com sucesso!')
           // TODO: Navegar para tela interna de perfil
         }
