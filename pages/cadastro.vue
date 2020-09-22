@@ -106,43 +106,28 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      form: {
-        activity_level: 'moderately_active',
-        age: '21',
-        data_consent: true,
-        email: 'ariel.santos@dcc.ufmg.br',
-        height: '172',
-        weight: '52',
-        is_diabetic: true,
-        name: 'Ariel',
-        password: 'senhasenha',
-        confirm_password: 'senhasenha',
-        physically_inactive: true,
-        pronoun: 'o',
-        race: 'brown',
-        sex: 'male',
-      },
+      form: {},
       schema_account: [
         {
           type: 'text',
           name: 'name',
-          validationName: ' ',
           label: 'Nome',
           validation: 'required',
+          validationName: 'Nome',
         },
         {
           type: 'email',
           name: 'email',
-          validationName: 'e-mail',
           label: 'E-mail',
           validation: 'required|email',
+          validationName: 'e-mail',
         },
         {
           type: 'password',
           name: 'password',
-          validationName: 'senha',
           label: 'Senha',
           validation: 'required|min:8,length',
+          validationName: 'senha',
         },
         {
           type: 'password',
