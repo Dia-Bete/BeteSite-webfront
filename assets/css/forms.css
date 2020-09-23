@@ -1,3 +1,7 @@
+input {
+  max-width: 50ch;
+}
+
 .custom-radio {
   @apply my-2;
 
@@ -22,8 +26,6 @@
   }
 }
 
-[data-classification='select'] {
-  & select[data-placeholder-selected='true'] {
-    @apply text-blue-700;
-  }
+select[data-placeholder-selected='true'] {
+  @apply text-blue-700;
 }

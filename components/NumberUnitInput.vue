@@ -1,18 +1,20 @@
 <template>
   <div :class="elementClasses" :data-type="context.type">
     <input
-      type="number"
       v-model="context.model"
+      type="number"
       v-bind="context.attributes"
-      :style="`padding-right: ${unit.length+2}ch`"
+      :style="`padding-right: ${unit.length + 2}ch`"
       @blur="context.blurHandler"
       v-on="$listeners"
     />
     <label
       :for="context.name"
       class="relative text-blue-700 font-medium self-center"
-      :style="`right: ${unit.length+1}ch`"
-    >{{unit}}</label>
+      :style="`right: ${unit.length + 1}ch`"
+    >
+      {{ unit }}
+    </label>
   </div>
 </template>
 
@@ -41,19 +43,18 @@ export default {
   props: {
     context: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     // TODO: Fazer isso direito com slotProps depois
-    unit() {
+    unit () {
       return this.context.attributes.unit
     },
-    elementClasses() {
+    elementClasses () {
       const local = 'flex flex-no-wrap'
-      if (this.context.classes.element) return local + ' ' + context.classes.element
-      else return local
-    },
-  },
+      if (this.context.classes.element) { return local + ' ' + this.context.classes.element } else { return local }
+    }
+  }
 }
 </script>

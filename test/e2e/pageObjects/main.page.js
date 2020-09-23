@@ -1,5 +1,5 @@
 class Page {
-  open(path = '/') {
+  open (path = '/') {
     browser.url(path)
   }
 }

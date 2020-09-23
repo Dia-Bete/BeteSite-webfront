@@ -4,27 +4,32 @@
   >
     <Logo />
     <h1 class="font-display font-bold text-3xl text-center text-blue-900">
-      <nuxt-link to="/">Bete</nuxt-link>
+      <nuxt-link to="/"> Bete </nuxt-link>
     </h1>
     <nav class="flex justify-end">
       <button class="px-2 py-1 lg:hidden" @click="toggleNavbar">
         <font-awesome-icon icon="bars" class="text-3xl" />
       </button>
-      <ul class="hidden lg:flex items-baseline text-left lg:text-center navlist" ref="navlist">
+      <ul
+        ref="navlist"
+        class="hidden lg:flex items-baseline text-left lg:text-center navlist"
+      >
         <li>
-          <nuxt-link to="/cadastro" class="text-blue-900 font-semibold">Cadastro</nuxt-link>
+          <nuxt-link to="/cadastro" class="text-blue-900 font-semibold">
+            Cadastro
+          </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/login">Login</nuxt-link>
+          <nuxt-link to="/login"> Login </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/dieta">Dieta</nuxt-link>
+          <nuxt-link to="/dieta"> Dieta </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/minha-saude">Minha Saúde</nuxt-link>
+          <nuxt-link to="/minha-saude"> Minha Saúde </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/tabela-calorias">Tabela de Calorias</nuxt-link>
+          <nuxt-link to="/tabela-calorias"> Tabela de Calorias </nuxt-link>
         </li>
       </ul>
     </nav>
@@ -57,13 +62,13 @@ import Vue from 'vue'
 
 export default Vue.extend({
   methods: {
-    toggleNavbar() {
+    toggleNavbar () {
       if (this.$refs.navlist) {
         const navlist = this.$refs.navlist as HTMLUListElement
         const visible = !navlist.classList.toggle('hidden')
         navlist.setAttribute('aria-expanded', `${visible}`)
       }
-    },
-  },
+    }
+  }
 })
 </script>

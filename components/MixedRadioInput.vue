@@ -1,25 +1,29 @@
 <!-- TODO: mover classes CSS para vue-formulate.js e forms.css -->
 <template>
   <div>
-    <div v-for="option in context.options" v-bind:key="option.id" class="custom-radio">
+    <div
+      v-for="option in context.options"
+      :key="option.id"
+      class="custom-radio"
+    >
       <input
-        type="radio"
         :id="option.id"
+        v-model="radioModel"
+        type="radio"
         :name="context.name"
         :value="option.value"
-        v-model="radioModel"
         v-on="$listeners"
         @blur="context.blurHandler"
       />
-      <label :class="context.classes.decorator" :for="option.id" />
-      <label class="radio-label" :for="option.id">{{option.label}}</label>
+      <label :class="context.classes.decorator" :for="option.id"></label>
+      <label class="radio-label" :for="option.id">{{ option.label }}</label>
     </div>
     <input
-      type="text"
       :id="`${context.id}_text`"
+      v-model="textModel"
+      type="text"
       :name="context.name"
       :class="context.classes.input"
-      v-model="textModel"
       :placeholder="context.attributes.placeholder"
       @blur="context.blurHandler"
     />
@@ -32,22 +36,22 @@ export default {
   props: {
     context: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
-  data() {
+  data () {
     return { radioModel: '', textModel: '' }
   },
   watch: {
-    radioModel(newVal) {
-      if (newVal === '') return
+    radioModel (newVal) {
+      if (newVal === '') { return }
       this.textModel = ''
       this.context.model = newVal
     },
-    textModel(newVal) {
+    textModel (newVal) {
       this.radioModel = ''
       this.context.model = newVal
-    },
-  },
+    }
+  }
 }
 </script>

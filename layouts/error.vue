@@ -1,8 +1,12 @@
 <template>
   <div class="h-screen pb-12 flex justify-center items-center flex-col">
-    <h1 class="message" v-if="error.statusCode === 404">Página não encontrada :(</h1>
-    <h1 class="message" v-else>Houve um erro :(</h1>
-    <nuxt-link to="/" class="link">Voltar para a página inicial</nuxt-link>
+    <h1 v-if="error.statusCode === 404" class="message">
+      Página não encontrada :(
+    </h1>
+    <h1 v-else class="message">
+      Houve um erro :(
+    </h1>
+    <nuxt-link to="/" class="link"> Voltar para a página inicial </nuxt-link>
   </div>
 </template>
 
@@ -22,7 +26,7 @@
 
 <script>
 export default {
-  props: ['error'],
-  layout: 'default',
+  // props: ['error'],
+  layout: 'default'
 }
 </script>
