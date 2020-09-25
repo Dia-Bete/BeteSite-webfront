@@ -1,6 +1,6 @@
 <template>
   <div
-    class="shadow-md bg-blue-200 rounded z-20 px-4 pt-6 self-center w-10/12 max-w-xs"
+    class="shadow-md bg-blue-200 rounded z-20 px-4 pt-6 self-center w-10/12 max-w-xs mt-32 lg:mt-56"
   >
     <h2 class="font-display font-semibold text-2xl leading-6 pb-6 text-center">
       Login
