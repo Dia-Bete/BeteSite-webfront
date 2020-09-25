@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class="layout">
     <Navbar />
-    <main class="mt-16 py-8 px-4">
+    <main class="absolute w-full mt-16 pt-8 px-4 flex flex-col place-content-start place-items-start flex-no-wrap overflow-y-auto">
       <Nuxt />
     </main>
   </div>
 </template>
 
-<style>
+<style lang="postcss">
 html {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
@@ -16,11 +16,6 @@ html {
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
 }
 
 *,
@@ -28,5 +23,14 @@ body {
 *::after {
   box-sizing: border-box;
   margin: 0;
+}
+
+#__nuxt, #__layout, .layout {
+  display: contents;
+}
+
+main::after {
+  content: "";
+  @apply w-full block h-8;
 }
 </style>
