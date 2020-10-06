@@ -1,18 +1,20 @@
 <template>
   <header
-    class="fixed z-40 top-0 w-screen bg-blue-200 py-2 px-2 grid grid-cols-3 grid-flow-col col-gap-1 items-baseline shadow-md"
+    class="fixed inset-x-0 top-0 z-40 bg-blue-200 py-2 px-2 flex flex-row flex-no-wrap items-center shadow-md"
   >
-    <Logo />
-    <h1 class="font-display font-bold text-3xl text-center text-blue-900">
-      <nuxt-link to="/"> Bete </nuxt-link>
-    </h1>
-    <nav class="flex justify-end">
+    <div class="inline-flex gap-2">
+      <Logo />
+      <h1 class="font-display font-bold text-3xl text-center text-blue-900">
+        <nuxt-link to="/"> Bete </nuxt-link>
+      </h1>
+    </div>
+    <nav class="flex-grow inline-flex justify-end">
       <button class="px-2 py-1 lg:hidden" @click="toggleNavbar">
         <font-awesome-icon icon="bars" class="text-3xl" />
       </button>
       <ul
         ref="navlist"
-        class="hidden lg:flex items-baseline text-left lg:text-center navlist"
+        class="hidden lg:inline-flex items-baseline text-left lg:text-center navlist"
       >
         <li>
           <nuxt-link to="/cadastro" class="text-blue-900 font-semibold">
@@ -47,12 +49,13 @@
   & li {
     @apply ml-3 whitespace-no-wrap font-medium font-display text-lg tracking-tight;
   }
+  & .nuxt-link-active {
+    @apply font-bold;
+  }
   & a:hover,
   & a:focus {
+    text-decoration: underline solid theme('colors.blue.600');
     text-decoration: underline solid theme('colors.blue.600') 4px;
-  }
-  & .nuxt-link-active {
-    @apply font-semibold;
   }
 }
 </style>

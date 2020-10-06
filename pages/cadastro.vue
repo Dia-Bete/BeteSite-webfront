@@ -1,7 +1,7 @@
 <template>
   <FormulateForm
     v-model="form"
-    class="mx-4 flex gap-6 flex-col items-center"
+    class="mx-4 self-center flex gap-6 flex-col items-center"
     @submit="submit"
   >
     <fieldset>
@@ -257,7 +257,7 @@ export default Vue.extend({
           ...data,
           height
         })
-        if (response.status === 200) {
+        if (response.status === 201) {
           alert('Conta criada com sucesso!')
           // TODO: Navegar para tela interna de perfil
         }
