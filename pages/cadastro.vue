@@ -250,8 +250,10 @@ export default Vue.extend({
   },
   methods: {
     async submit (data) {
+      if (!confirm('Enviar estes dados?')) { return }
+
       // TODO: Ajustar o backend para receber tudo em ints
-      const height = (parseFloat(data.height) / 100).toString(10)
+      const height = (parseFloat(data.height) / 100)
       try {
         const response = await this.$axios.post('/signup_api', {
           ...data,
@@ -259,11 +261,10 @@ export default Vue.extend({
         })
         if (response.status === 201) {
           alert('Conta criada com sucesso!')
-          // TODO: Navegar para tela interna de perfil
+          this.$router.push('login')
         }
       } catch (error) {
         alert('Perdão, houve um erro :/')
-        console.debug(error)
       }
     }
   }

@@ -51,14 +51,8 @@ export default Vue.extend({
     }
   },
   methods: {
-    async submit (data: FormData) {
-      try {
-        const response = await this.$axios.post('/signin_api', data)
-        console.debug(response)
-        // TODO: Navegar para tela interna de perfil
-      } catch (error) {
-        this.alert = error.alert
-      }
+    submit (data: { email: string, password: string }) {
+      this.$store.dispatch('signIn', data)
     }
   }
 })
