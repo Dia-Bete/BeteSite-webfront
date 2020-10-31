@@ -22,11 +22,17 @@ html {
 *::before,
 *::after {
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   margin: 0;
 }
 
 #__nuxt, #__layout, .layout {
   display: contents;
+}
+
+body {
+  @apply bg-blue-100;
 }
 
 main::after {
