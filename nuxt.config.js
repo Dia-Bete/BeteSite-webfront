@@ -89,8 +89,7 @@ export default {
 
   fontawesome: {
     icons: {
-      solid: ['faBars'],
-      regular: []
+      solid: ['faBars', 'faChevronLeft', 'faSearch']
     }
   }
 }

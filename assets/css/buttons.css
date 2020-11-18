@@ -3,7 +3,11 @@
  */
 
 .btn {
-  @apply block rounded text-center py-2 font-display font-semibold text-lg;
+  @apply block text-center px-2 transition-colors duration-150;
+
+  &:disabled {
+    @apply cursor-not-allowed text-gray-700;
+  }
 }
 
 .btn-primary {
@@ -21,4 +25,8 @@
   &:focus {
     @apply bg-blue-300;
   }
+}
+
+.btn-tertiary {
+  @apply font-body font-medium text-blue-800;
 }
