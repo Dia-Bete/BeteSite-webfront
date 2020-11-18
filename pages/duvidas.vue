@@ -109,7 +109,7 @@ export default Vue.extend({
       this.$axios.post(`https://diabeteqa.rj.r.appspot.com/${action}`, {
         candidate: this.query,
         idx: answerIndex
-      })
+      }).catch() // TODO: reportar erros no futuro
     }
   }
 })
