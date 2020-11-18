@@ -5,8 +5,8 @@
 .btn {
   @apply block text-center px-2;
 
-  &:hover {
-    cursor: pointer;
+  &:disabled {
+    @apply cursor-not-allowed text-gray-700;
   }
 }
 

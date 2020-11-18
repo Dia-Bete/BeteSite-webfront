@@ -12,14 +12,15 @@
     >
       <input
         v-model.trim="query"
-        tabindex="1"
+        tabindex="0"
         type="search"
         placeholder="O que você gostaria de saber?"
         class="flex-grow"
       />
       <button
         type="submit"
-        class="btn bg-white rounded-md w-10 h-10 hover:shadow-lg"
+        class="btn rounded-md w-10 h-10 hover:shadow-lg"
+        :class="query ? 'bg-white' : 'bg-gray-400'"
         :disabled="!query"
       >
         <font-awesome-icon icon="search" class="text-blue-800" size="lg" />
@@ -37,21 +38,31 @@
             <h4 class="font-display">
               Essa resposta é relevante?
             </h4>
-            <button class="btn btn-tertiary" @click="feedback('like',answer.index)">
-              SIM
-            </button>
-            <button class="btn btn-tertiary" @click="feedback('dislike',answer.index)">
-              NÃO
+            <button
+              v-for="(option, index) in [['SIM', 'like'], ['NÃO', 'dislike']]"
+              :key="index"
+              class="btn btn-tertiary rounded-lg"
+              :class="answer.feedback === option[1] && ['used']"
+              :disabled="answer.feedback"
+              @click="feedback(option[1],answer.index)"
+            >
+              {{ option[0] }}
             </button>
           </div>
         </div>
         <footer class="bg-blue-200 px-4 py-3 font-display text-blue-900 text-sm">
-          Confiança nesta resposta: {{ answer.score.toLocaleString() }}
+          Confiança nesta resposta: {{ answer.score.toFixed(2).toLocaleString() }}
         </footer>
       </div>
     </div>
   </section>
 </template>
+
+<style lang="postcss" scoped>
+  .used {
+    @apply bg-blue-700 text-gray-200
+  }
+</style>
 
 <script lang="ts">
 import Vue from 'vue'
@@ -71,17 +82,18 @@ export default Vue.extend({
         this.answers = response.data.answers
       } catch (error) {
         alert('Perdão, houve um erro :/')
-        console.debug(error)
         this.answers = []
       }
     },
-    feedback (action: 'like'|'dislike', index: number) {
+    feedback (action: 'like'|'dislike', answerIndex: number) {
+      const index = this.answers.findIndex(a => a.index === answerIndex)!
+      const answer = this.answers[index]
+      answer.feedback = action
+      this.$set(this.answers, index, answer)
       this.$axios.post(`https://diabeteqa.rj.r.appspot.com/${action}`, {
         candidate: this.query,
-        idx: index
+        idx: answerIndex
       })
-      const answer = this.answers.find(a => a.index === index)!
-      answer.feedback = action
     }
   }
 })
