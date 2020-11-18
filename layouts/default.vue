@@ -8,7 +8,7 @@
 </template>
 
 <style lang="postcss">
-html {
+:root {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   word-spacing: 1px;
@@ -16,6 +16,8 @@ html {
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  --animate-duration: 300ms;
+  --animate-delay: 100ms;
 }
 
 *,
@@ -40,3 +42,9 @@ main::after {
   @apply w-full block h-8;
 }
 </style>
+
+<script>
+import 'animate.css'
+
+export default {}
+</script>
