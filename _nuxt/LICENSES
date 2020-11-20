@@ -1,8 +1,13 @@
 /*!
-  * vue-router v3.4.8
+  * vue-router v3.4.9
   * (c) 2020 Evan You
   * @license MIT
   */
+
+/*!
+ * Font Awesome Free 5.15.1 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
 
 /*!
  * Vue.js v2.6.12
