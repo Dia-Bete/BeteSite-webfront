@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/dieta", {data:[],fetch:[],mutations:void 0});
