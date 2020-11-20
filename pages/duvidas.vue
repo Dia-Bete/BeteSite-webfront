@@ -35,7 +35,7 @@
           placeholder="O que você gostaria de saber?"
           class="w-full"
         />
-        <button v-show="querySent == query && state=='loaded'" type="reset" class="absolute" style="right: calc(26px + 4rem);">
+        <button v-show="querySent == query && state=='loaded'" type="reset" class="w-0" style="transform: translateX(calc(-26px - 1rem));">
           <font-awesome-icon icon="backspace" class="text-blue-800" size="lg" />
         </button>
       </div>
