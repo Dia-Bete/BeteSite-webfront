@@ -13,20 +13,20 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    htmlAttrs: {
-      lang: 'pt-BR'
-    },
-    title: 'DiaBete',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Assistente virtual para acompanhamento de diabetes'
-      }
-    ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/BeteSite-webfront/favicon.ico' }]
+  },
+  /*
+  ** Zero config PWA solution for Nuxt.js
+  ** https://pwa.nuxtjs.org/
+  */
+  pwa: {
+    meta: {
+      lang: 'pt-BR',
+      name: 'DiaBete',
+      description: 'Assistente virtual para acompanhamento de diabetes',
+      author: 'LETRA - UFMG',
+      nativeUI: true
+    }
   },
   /*
    ** Global CSS
@@ -53,15 +53,15 @@ export default {
     '@nuxt/typescript-build',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/fontawesome'
+    '@nuxtjs/fontawesome',
+    '@nuxtjs/pwa'
   ],
   /*
    ** Nuxt.js modules
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/axios'
     // Doc: https://github.com/nuxt/content
     // '@nuxt/content',
   ],
@@ -76,7 +76,7 @@ export default {
    ** Content module configuration
    ** See https://content.nuxtjs.org/configuration
    */
-  content: {},
+  // content: {},
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
