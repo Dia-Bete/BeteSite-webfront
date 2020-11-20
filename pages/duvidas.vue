@@ -24,52 +24,70 @@
     <form
       class="p-4 bg-blue-700 rounded shadow-md flex flex-row gap-2 justify-between items-center"
       @submit.prevent="submit"
+      @reset.prevent="clear"
     >
-      <input
-        v-model.trim="query"
-        tabindex="0"
-        type="search"
-        placeholder="O que você gostaria de saber?"
-        class="flex-grow"
-      />
+      <div class="flex-grow flex flex-row items-center">
+        <input
+          v-model.trim="query"
+          :disabled="state == 'loading'"
+          tabindex="0"
+          type="search"
+          placeholder="O que você gostaria de saber?"
+          class="w-full"
+        />
+        <button v-show="querySent == query && state=='loaded'" type="reset" class="absolute" style="right: calc(26px + 4rem);">
+          <font-awesome-icon icon="backspace" class="text-blue-800" size="lg" />
+        </button>
+      </div>
       <button
         type="submit"
-        class="btn rounded-md w-10 h-10 hover:shadow-lg"
-        :class="query ? 'bg-white' : 'bg-gray-400'"
-        :disabled="!query"
+        class="btn rounded-md w-10 h-10 hover:shadow-xl hover:bg-white"
+        :class="query ? 'bg-gray-100' : 'bg-gray-500'"
+        :disabled="!query || state == 'loading'"
       >
         <font-awesome-icon icon="search" class="text-blue-800" size="lg" />
       </button>
     </form>
-    <div v-show="answers" class="grid grid-cols-1 grid-flow-row gap-4">
-      <div v-for="answer in answers" :key="answer.index" class="bg-white rounded shadow overflow-y-hidden">
-        <div class="px-4 pt-4 mb-6 flex flex-col gap-6">
-          <blockquote class="flex flex-col gap-4">
-            <p v-for="(paragraph, index) in answer.a" :key="index">
-              {{ paragraph }}
-            </p>
-          </blockquote>
-          <div class="flex justify-between">
-            <h4 class="font-display">
-              Essa resposta é relevante?
-            </h4>
-            <button
-              v-for="(option, index) in [['SIM', 'like'], ['NÃO', 'dislike']]"
-              :key="index"
-              class="btn btn-tertiary rounded-lg"
-              :class="answer.feedback === option[1] && ['used']"
-              :disabled="answer.feedback"
-              @click="feedback(option[1],answer.index)"
-            >
-              {{ option[0] }}
-            </button>
+    <template v-if="state == 'loading'">
+      <Loader>
+      </Loader>
+    </template>
+    <template v-else-if="answers.length > 0">
+      <div class="grid grid-cols-1 grid-flow-row gap-4 overflow-hidden">
+        <div v-for="answer in answers" :key="answer.index" class="bg-white rounded shadow overflow-y-hidden">
+          <div class="px-4 pt-4 mb-6 flex flex-col gap-6">
+            <blockquote class="flex flex-col gap-4">
+              <p v-for="(paragraph, index) in answer.a" :key="index">
+                {{ paragraph }}
+              </p>
+            </blockquote>
+            <div class="flex justify-between">
+              <h4 class="font-display">
+                Essa resposta é relevante?
+              </h4>
+              <button
+                v-for="(option, index) in [['SIM', 'like'], ['NÃO', 'dislike']]"
+                :key="index"
+                class="btn btn-tertiary rounded-lg"
+                :class="answer.feedback === option[1] && ['used']"
+                :disabled="answer.feedback"
+                @click="feedback(option[1],answer.index)"
+              >
+                {{ option[0] }}
+              </button>
+            </div>
           </div>
+          <footer class="bg-blue-200 px-4 py-3 font-display text-blue-900 text-sm">
+            Confiança nesta resposta: {{ answer.score.toFixed(2).toLocaleString() }}
+          </footer>
         </div>
-        <footer class="bg-blue-200 px-4 py-3 font-display text-blue-900 text-sm">
-          Confiança nesta resposta: {{ answer.score.toFixed(2).toLocaleString() }}
-        </footer>
       </div>
-    </div>
+    </template>
+    <template v-else-if="state=='loaded'">
+      <p class="bg-white rounded shadow p-4 text-center">
+        Não encontramos nenhuma resposta, desculpa <font-awesome-icon icon="frown" class="text-blue-600" size="lg" />
+      </p>
+    </template>
   </section>
 </template>
 
@@ -86,6 +104,8 @@ export default Vue.extend({
   data () {
     return {
       helpText: false,
+      state: 'empty' as 'empty' | 'loading' | 'loaded',
+      querySent: null as string|null,
       query: '',
       answers: [] as Array<{a: Array<string>, index: number, score: number, feedback?: 'like'|'dislike'}>
     }
@@ -94,8 +114,11 @@ export default Vue.extend({
   methods: {
     async submit () {
       try {
+        this.state = 'loading'
         const response = await this.$axios.get('https://diabeteqa.rj.r.appspot.com/qa/' + this.query)
         this.answers = response.data.answers
+        this.querySent = this.query
+        this.state = 'loaded'
       } catch (error) {
         alert('Perdão, houve um erro :/')
         this.answers = []
@@ -110,6 +133,12 @@ export default Vue.extend({
         candidate: this.query,
         idx: answerIndex
       }).catch() // TODO: reportar erros no futuro
+    },
+    clear () {
+      this.query = ''
+      this.answers = []
+      this.state = 'empty'
+      this.querySent = null
     }
   }
 })
