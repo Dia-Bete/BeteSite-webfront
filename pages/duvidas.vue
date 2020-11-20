@@ -26,26 +26,22 @@
       @submit.prevent="submit"
       @reset.prevent="clear"
     >
-      <div class="flex-grow flex flex-row items-center">
-        <input
-          v-model.trim="query"
-          :disabled="state == 'loading'"
-          tabindex="0"
-          type="search"
-          placeholder="O que você gostaria de saber?"
-          class="w-full"
-        />
-        <button v-show="querySent == query && state=='loaded'" type="reset" class="w-0" style="transform: translateX(calc(-26px - 1rem));">
-          <font-awesome-icon icon="backspace" class="text-blue-800" size="lg" />
-        </button>
-      </div>
+      <input
+        v-model.trim="query"
+        :disabled="state == 'loading'"
+        tabindex="0"
+        type="search"
+        placeholder="O que você gostaria de saber?"
+        class="flex-grow"
+      />
       <button
-        type="submit"
-        class="btn rounded-md w-10 h-10 hover:shadow-xl hover:bg-white"
+        :type="querySent == query? 'reset' : 'submit'"
+        class="btn rounded-md w-10 h-10 hover:shadow-xl hover:bg-white text-blue-800"
         :class="query ? 'bg-gray-100' : 'bg-gray-500'"
-        :disabled="!query || state == 'loading'"
+        :disabled="state == 'loading'"
       >
-        <font-awesome-icon icon="search" class="text-blue-800" size="lg" />
+        <font-awesome-icon v-show="querySent != query || state!='loaded'" icon="search" size="lg" />
+        <font-awesome-icon v-show="querySent == query && state=='loaded'" icon="backspace" />
       </button>
     </form>
     <template v-if="state == 'loading'">
