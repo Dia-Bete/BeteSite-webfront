@@ -1,124 +1,176 @@
 <template>
-  <div class="max-w-xl mx-auto px-4 content-center">
+  <div class="max-w-xl mx-auto px-4 content-center place-items-center">
     <div v-show="isAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
       <strong>Cuidado!</strong> Sua refeição ultrapassa o total de calorias que você deve consumir. Planeje a distribuição dos seus alimentos para evitar ganho de peso.
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <button @click="closeAlert()" type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
-    <div class="grid grid-flow-col auto-cols-max items-center">
-      <div class="px-4">
-        <strong><span>{{ diet.protein.toFixed(2) }}</span> / <span>{{ diet.protein_goal }}</span></strong><br />
-        <span>Proteínas</span>
+    <section v-show="!isLogged">
+      <div class="grid place-items-center">
+        <form>
+          <fieldset>Informações Físicas</fieldset>
+          <label for="meal" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Sexo</label>
+          <select name="meal" v-model="user.sex" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200">
+            <option selected value="female">Feminino</option>
+            <option value="male">Masculino</option>
+          </select>
+          <label for="birthDate" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Data de Nascimento</label>
+          <input id="birthDate" v-model="user.birthDate" type="date" name="date" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <label for="weight_kg" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Peso (Kg)</label>
+          <input id="weight_kg" v-model="user.weight_kg" type="number" name="weight_kg" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <label for="height" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Altura (m)</label>
+          <input id="height" v-model="user.height" type="number" step=".01" name="height" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <label for="activity" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Sexo</label>
+          <select name="activity" v-model="user.activity" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200">
+            <option selected value="sedentary">Sedentário</option>
+            <option value="lightly_active">Pouco Ativo</option>
+            <option selected value="moderately_active">Moderamente Ativo</option>
+            <option value="very_active">Muito Ativo</option>
+            <option selected value="extra_active">Exageradamente Ativo</option>
+          </select>
+          <button type="submit" @click="signin()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+            Submeter
+          </button>
+        </form>
       </div>
-      <div class="px-4">
-        <div class="text-xl">
-          <strong><span>{{ diet.carbs.toFixed(2) }}</span> / <span>{{ diet.carbs_goal }}</span></strong>
+    </section>
+
+    <section v-show="isLogged">
+      <div class="grid grid-flow-col content-center auto-cols-max place-items-center">
+        <div class="px-4">
+          <strong><span>{{ diet.protein.toFixed(2) }}</span> / <span>{{ diet.meal_goal.protein_goal }}</span></strong><br />
+          <span>Proteínas</span>
         </div>
-        <span>Carboidratos</span>
+        <div class="px-4">
+          <div class="text-xl">
+            <strong><span>{{ diet.carbs.toFixed(2) }}</span> / <span>{{ diet.meal_goal.carbs_goal }}</span></strong>
+          </div>
+          <span>Carboidratos</span>
+        </div>
+        <div class="px-4">
+          <strong><span>{{ diet.fat.toFixed(2) }}</span> / <span>{{ diet.meal_goal.fat_goal }}</span></strong><br />
+          <span>Gorduras</span>
+        </div>
       </div>
-      <div class="px-4">
-        <strong><span>{{ diet.fat.toFixed(2) }}</span> / <span>{{ diet.fat_goal }}</span></strong><br />
-        <span>Gorduras</span>
+
+      <div class="content-center grid place-items-center py-4">
+        <table class="table-auto content-center w-full">
+          <thead>
+            <tr>
+              <th class="w-2/5">
+                Alimento
+              </th>
+              <th class="w-1/5">
+                Medida
+              </th>
+              <th class="w-1/5 ">
+                Porção
+              </th>
+              <th class="w-1/5"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="food in diet.foods" :key="food.id">
+              <td class="w-2/5">
+                {{ food.label }}
+              </td>
+              <td class="w-1/5">
+                {{ food.measure }} g
+              </td>
+              <td class="w-1/5">
+                {{ food.quantity }}
+              </td>
+              <td class="w-1/5">
+                <a @click="deleteFood(food.food_id)">Remover</a>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot v-show="select.show">
+            <tr>
+              <td class="w-2/5">
+                {{ select.food.label }}
+              </td>
+              <td class="w-1/5">
+                <select v-model="select.food.measure">
+                  <option v-for="measure in select.food.measure_list" :key="measure.id" :value="measure.id">
+                    {{ measure.label }}
+                  </option>
+                </select>
+              </td>
+              <td class="w-1/5">
+                <select v-model="select.food.portion">
+                  <option selected value="0.5">
+                    ½
+                  </option>
+                  <option value="1">
+                    1
+                  </option>
+                  <option value="1.5">
+                    1 ½
+                  </option>
+                  <option value="2">
+                    2
+                  </option>
+                  <option value="2.5">
+                    2 ½
+                  </option>
+                  <option value="3">
+                    3
+                  </option>
+                  <option value="3.5">
+                    3 ½
+                  </option>
+                </select>
+              </td>
+              <td class="w-1/5">
+                <a @click="cancelFood()">Cancelar</a>
+                <a @click="addFood()"> Adicionar</a>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
-    </div>
 
-    <div class="content-center py-4">
-      <table class="table-auto content-center w-full">
-        <thead>
-          <tr>
-            <th class="w-2/5">
-              Alimento
-            </th>
-            <th class="w-1/5">
-              Medida
-            </th>
-            <th class="w-1/5 ">
-              Porção
-            </th>
-            <th class="w-1/5"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="food in diet.foods" :key="food.id">
-            <td class="w-2/5">
-              {{ food.label }}
-            </td>
-            <td class="w-1/5">
-              {{ food.measure }} g
-            </td>
-            <td class="w-1/5">
-              {{ food.quantity }}
-            </td>
-            <td class="w-1/5">
-              <a @click="deleteFood(food.food_id)">Remover</a>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot v-show="select.show">
-          <tr>
-            <td class="w-2/5">
-              {{ select.food.label }}
-            </td>
-            <td class="w-1/5">
-              <select v-model="select.food.measure">
-                <option v-for="measure in select.food.measure_list" :key="measure.id" :value="measure.id">
-                  {{ measure.label }}
-                </option>
-              </select>
-            </td>
-            <td class="w-1/5">
-              <select v-model="select.food.portion">
-                <option selected value="0.5">
-                  ½
-                </option>
-                <option value="1">
-                  1
-                </option>
-                <option value="1.5">
-                  1 ½
-                </option>
-                <option value="2">
-                  2
-                </option>
-                <option value="2.5">
-                  2 ½
-                </option>
-                <option value="3">
-                  3
-                </option>
-                <option value="3.5">
-                  3 ½
-                </option>
-              </select>
-            </td>
-            <td class="w-1/5">
-              <a @click="cancelFood()">Cancelar</a>
-              <a @click="addFood()"> Adicionar</a>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-
-    <div class="py-4">
-      <div>
-        <input
-          v-model="search.food"
-          type="text"
-          class="border-solid"
-          placeholder="O que você comeu nesta refeição?"
-          autocomplete="off"
-          @input="searchFood"
-        />
-        <div class="grid grid-flow-row auto-rows-max overflow-auto h-50 max-w-sm mx-auto">
-          <div v-for="food in search.food_list" :key="food.id" cursor-pointer hover:bg-indigo-500>
-            <a @click="selectFood(food.id)">{{ food.label }}</a>
+      <div class="py-4 grid place-items-center">
+        <div>
+          <input
+            v-model="search.food"
+            type="text"
+            class="block w-full p-3 mt-2 text-gray-700 bg-gray-200"
+            placeholder="O que você comeu nesta refeição?"
+            autocomplete="off"
+            @input="searchFood"
+          />
+          <div class="grid grid-flow-row auto-rows-max overflow-auto h-50 max-w-sm mx-auto">
+            <div v-for="food in search.food_list" :key="food.id" cursor-pointer hover:bg-indigo-500>
+              <a @click="selectFood(food.id)">{{ food.label }}</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <div class="grid place-items-center">
+        <form>
+          <label for="meal" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Refeição</label>
+          <select name="meal" @change="changeMeal()" v-model="diet.meal" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200">
+            <option selected value="breakfast">Café da Manhã</option>
+            <option value="snack1">Lanche da Manhã</option>
+            <option value="lunch">Almoço</option>
+            <option value="snack2">Lanche da Tarde</option>
+            <option value="dinner">Jantar</option>
+          </select>
+          <label for="date" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Data</label>
+          <input id="date" v-model="diet.date" type="date" name="date" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <label for="time" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Hora</label>
+          <input id="time" v-model="diet.time" type="time" name="time" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <!-- <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+            Cadastrar
+          </button> -->
+        </form>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -129,15 +181,27 @@ export default Vue.extend({
   data () {
     return {
       isAlert: false,
+      isLogged: false,
+      user :{
+        id: "",
+        name: "",
+        sex: "female",
+        birthDate: "2002-01-01",
+        weight_kg: 0,
+        height: 1.00,
+        activity: "lightly_active",
+        meal_plans: {}
+      },
       diet: {
         carbs: 0,
         fat: 0,
         protein: 0,
+        meal: "breakfast",
         diet_plans: null,
         foods: [],
-        carbs_goal: 78,
-        protein_goal: 31,
-        fat_goal: 20
+        date: null,
+        time: null,
+        meal_goal: {}
       },
       search: {
         food: '',
@@ -158,8 +222,79 @@ export default Vue.extend({
   async created () {
     const response = await this.$axios.get('https://trusty-pipe-277616.rj.r.appspot.com/tbca')
     this.search.foods = response.data.tbca
+
+    var date = new Date();
+    var dia  = date.getDate().toString().padStart(2, '0');
+    var mes  = (date.getMonth()+1).toString().padStart(2, '0');
+    var ano  = date.getFullYear();
+    this.diet.date = ano+"-"+mes+"-"+dia;
+
+    var hour  = date.getHours().toString().padStart(2, '0');
+    var minute  = (date.getMinutes()).toString().padStart(2, '0');
+    this.diet.time = hour+":"+minute;
+
+    // is user logged?
+    this.isLogged = true;
+    if (this.user.id == ""){
+      this.isLogged = false;
+    }
+
   },
   methods: {
+    signin (){
+      event.preventDefault();
+      var birthday = new Date(this.user.birthDate + 'T00:00:00');
+      var ageDifMs = Date.now() - birthday.getTime();
+      var ageDate = new Date(ageDifMs); // miliseconds from epoch
+      var age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+      var weight_kg = this.user.weight_kg;
+      var height_cm = this.user.height * 100;
+      if (this.user.sex == "female"){
+        var bmr = 665.09 + (9.56 * weight_kg) + (1.84 * height_cm) - (4.67 * age)
+      } else {
+        var bmr = 66.47 + (13.75 * weight_kg) + (5 * height_cm) - (6.75 * age)
+      }
+
+      var active_level = this.user.activity;
+      if (active_level == 'sedentary') {
+        var total_calories = 1.2 * bmr;
+      }
+      else if (active_level == 'lightly_active') {
+        var total_calories = 1.375 * bmr;
+      }
+      else if (active_level == 'moderately_active') {
+        var total_calories = 1.55 * bmr;
+      }
+      else if (active_level == 'very_active') {
+        var total_calories = 1.725 * bmr;
+      }
+      else { 
+        var total_calories = 1.9 * bmr;
+      }
+      this.isLogged = true;
+      this.user.meal_plans = {
+        meal: {
+          carbs_goal: ((total_calories * 0.25 * 0.5) / 4).toFixed(0),
+          protein_goal: ((total_calories * 0.25 * 0.2) / 4).toFixed(0),
+          fat_goal: ((total_calories * 0.25 * 0.3) / 9).toFixed(0)
+        },
+        snack: {
+          carbs_goal: ((total_calories * 0.125 * 0.5) / 4).toFixed(0),
+          protein_goal: ((total_calories * 0.125 * 0.2) / 4).toFixed(0),
+          fat_goal: ((total_calories * 0.125 * 0.3) / 9).toFixed(0)
+        }
+      }
+      this.diet.meal_goal = this.user.meal_plans.meal;
+    },
+    changeMeal () {
+      if (this.diet.meal == "snack1" || this.diet.meal == "snack2") {
+        this.diet.meal_goal = this.user.meal_plans.snack;
+      } 
+      else {
+        this.diet.meal_goal = this.user.meal_plans.meal;
+      }
+    },
     searchFood () {
       this.select.show = false
       const query = this.search.food.toLowerCase().trim()
@@ -205,8 +340,8 @@ export default Vue.extend({
       this.diet.carbs += (measure_info.carbs * this.select.food.portion)
       this.diet.protein += (measure_info.protein * this.select.food.portion)
 
-      if (this.diet.fat > this.diet.fat_goal || this.diet.carbs > this.diet.carbs_goal ||
-            this.diet.protein > this.diet.protein_goal) {
+      if (this.diet.fat > this.diet.meal_goal.fat_goal || this.diet.carbs > this.diet.meal_goal.carbs_goal ||
+            this.diet.protein > this.diet.meal_goal.protein_goal) {
         this.isAlert = true
       }
 
@@ -241,6 +376,9 @@ export default Vue.extend({
           measure_list: []
         }
       }
+    },
+    closeAlert(){
+      this.isAlert = false;
     }
   }
 })
