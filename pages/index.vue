@@ -7,7 +7,7 @@
       :icon-src="require('../assets/img/diet.svg')"
       anchor="/dieta"
     />
-    <FeatureCard
+    <!-- <FeatureCard
       title="Minha Saúde"
       description="Gere um relatório sobre seu estado de saúde."
       action="Gerar Relatório"
@@ -20,7 +20,7 @@
       action="Consultar"
       :icon-src="require('../assets/img/magnifier.svg')"
       anchor="/tabela-calorias"
-    />
+    /> -->
     <FeatureCard
       title="Dúvidas"
       description="Informações sobre diabetes preparadas por profissionais de saúde."

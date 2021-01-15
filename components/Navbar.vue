@@ -1,6 +1,7 @@
 <template>
   <header
     class="fixed inset-x-0 top-0 z-40 bg-blue-200 py-2 px-2 flex flex-row flex-no-wrap items-center shadow-md"
+    @mouseleave="closeNavbar"
   >
     <div class="inline-flex gap-2">
       <Logo />
@@ -8,13 +9,14 @@
         <nuxt-link to="/"> Bete </nuxt-link>
       </h1>
     </div>
-    <nav class="flex-grow inline-flex justify-end">
+    <nav class="flex-grow inline-flex justify-end" aria-label="Navegação Principal" role="navigation">
       <button class="px-2 py-1 lg:hidden" @click="toggleNavbar">
         <font-awesome-icon icon="bars" class="text-3xl" />
       </button>
       <ul
         ref="navlist"
-        class="hidden lg:inline-flex items-baseline text-left lg:text-center navlist"
+        aria-expanded="false"
+        class="fixed lg:static shadow-lg lg:shadow-none hidden lg:inline-flex text-left lg:text-center navlist"
       >
         <li>
           <nuxt-link to="/cadastro" class="text-blue-900 font-semibold">
@@ -28,24 +30,24 @@
           <nuxt-link to="/dieta"> Dieta </nuxt-link>
         </li>
         <li>
+          <nuxt-link to="/duvidas"> Dúvidas </nuxt-link>
+        </li>
+        <!-- <li>
           <nuxt-link to="/minha-saude"> Minha Saúde </nuxt-link>
         </li>
         <li>
           <nuxt-link to="/tabela-calorias"> Tabela de Calorias </nuxt-link>
-        </li>
+        </li> -->
       </ul>
     </nav>
   </header>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 .navlist {
-  &[aria-expanded='true'] {
-    @apply fixed bg-blue-200 right-0 py-2 px-4 rounded rounded-t-none leading-8;
-    top: theme('spacing.16');
-    box-shadow: 0px 10px 10px hsla(0, 0%, 0%, 0.12),
-      0px 4px 4px -1px hsla(0, 0%, 0%, 0.2), 0px 5px 5px hsla(0, 0%, 0%, 0.14);
-  }
+  @apply items-baseline bg-blue-200 right-0 py-2 px-4 mr-3 rounded rounded-t-none leading-8;
+  top: theme('spacing.16');
+
   & li {
     @apply ml-3 whitespace-no-wrap font-medium font-display text-lg tracking-tight;
   }
@@ -64,12 +66,19 @@
 import Vue from 'vue'
 
 export default Vue.extend({
+  computed: {
+    navlist () {
+      return this.$refs.navlist as HTMLElement
+    }
+  },
   methods: {
     toggleNavbar () {
-      if (this.$refs.navlist) {
-        const navlist = this.$refs.navlist as HTMLUListElement
-        const visible = !navlist.classList.toggle('hidden')
-        navlist.setAttribute('aria-expanded', `${visible}`)
+      const visible = !this.navlist.classList.toggle('hidden')
+      this.navlist.setAttribute('aria-expanded', `${visible}`)
+    },
+    closeNavbar (ev:MouseEvent) {
+      if (this.navlist.getAttribute('aria-expanded') === 'true' && (ev.target as HTMLElement).contains(this.navlist)) {
+        this.toggleNavbar()
       }
     }
   }

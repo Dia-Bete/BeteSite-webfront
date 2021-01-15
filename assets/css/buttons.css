@@ -3,7 +3,7 @@
  */
 
 .btn {
-  @apply block text-center px-2 transition-colors duration-150;
+  @apply block text-center font-medium px-2 py-1 rounded-md transition-colors duration-150;
 
   &:disabled {
     @apply cursor-not-allowed text-gray-700;
