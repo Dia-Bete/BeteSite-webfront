@@ -2,7 +2,7 @@
   <div class="max-w-xl mx-auto px-4 content-center place-items-center">
     <div v-show="isAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
       <strong>Cuidado!</strong> Sua refeição ultrapassa o total de calorias que você deve consumir. Planeje a distribuição dos seus alimentos para evitar ganho de peso.
-      <button @click="closeAlert()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="closeAlert()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -12,25 +12,61 @@
         <form>
           <fieldset>Informações Físicas</fieldset>
           <label for="meal" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Sexo</label>
-          <select name="meal" v-model="user.sex" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200">
-            <option selected value="female">Feminino</option>
-            <option value="male">Masculino</option>
+          <select id="meal" v-model="user.sex" name="meal" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200">
+            <option selected value="female">
+              Feminino
+            </option>
+            <option value="male">
+              Masculino
+            </option>
           </select>
           <label for="birthDate" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Data de Nascimento</label>
-          <input id="birthDate" v-model="user.birthDate" type="date" name="date" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <input
+            id="birthDate"
+            v-model="user.birthDate"
+            type="date"
+            name="date"
+            class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+            required
+          />
           <label for="weight_kg" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Peso (Kg)</label>
-          <input id="weight_kg" v-model="user.weight_kg" type="number" name="weight_kg" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <input
+            id="weight_kg"
+            v-model="user.weight_kg"
+            type="number"
+            name="weight_kg"
+            class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+            required
+          />
           <label for="height" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Altura (m)</label>
-          <input id="height" v-model="user.height" type="number" step=".01" name="height" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <input
+            id="height"
+            v-model="user.height"
+            type="number"
+            step=".01"
+            name="height"
+            class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+            required
+          />
           <label for="activity" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Sexo</label>
-          <select name="activity" v-model="user.activity" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200">
-            <option selected value="sedentary">Sedentário</option>
-            <option value="lightly_active">Pouco Ativo</option>
-            <option selected value="moderately_active">Moderamente Ativo</option>
-            <option value="very_active">Muito Ativo</option>
-            <option selected value="extra_active">Exageradamente Ativo</option>
+          <select id="activity" v-model="user.activity" name="activity" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200">
+            <option selected value="sedentary">
+              Sedentário
+            </option>
+            <option value="lightly_active">
+              Pouco Ativo
+            </option>
+            <option selected value="moderately_active">
+              Moderadamente Ativo
+            </option>
+            <option value="very_active">
+              Muito Ativo
+            </option>
+            <option selected value="extra_active">
+              Exageradamente Ativo
+            </option>
           </select>
-          <button type="submit" @click="signin()" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+          <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none" @click="getBioData()">
             Submeter
           </button>
         </form>
@@ -144,7 +180,7 @@
             @input="searchFood"
           />
           <div class="grid grid-flow-row auto-rows-max overflow-auto h-50 max-w-sm mx-auto">
-            <div v-for="food in search.food_list" :key="food.id" cursor-pointer hover:bg-indigo-500>
+            <div v-for="food in search.food_list" :key="food.id" class="cursor-pointer hover:bg-indigo-500">
               <a @click="selectFood(food.id)">{{ food.label }}</a>
             </div>
           </div>
@@ -154,17 +190,42 @@
       <div class="grid place-items-center">
         <form>
           <label for="meal" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Refeição</label>
-          <select name="meal" @change="changeMeal()" v-model="diet.meal" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200">
-            <option selected value="breakfast">Café da Manhã</option>
-            <option value="snack1">Lanche da Manhã</option>
-            <option value="lunch">Almoço</option>
-            <option value="snack2">Lanche da Tarde</option>
-            <option value="dinner">Jantar</option>
+          <select v-model="diet.meal" name="meal" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200" @change="changeMeal()">
+            <option selected value="breakfast">
+              Café da Manhã
+            </option>
+            <option value="snack1">
+              Lanche da Manhã
+            </option>
+            <option value="lunch">
+              Almoço
+            </option>
+            <option value="snack2">
+              Lanche da Tarde
+            </option>
+            <option value="dinner">
+              Jantar
+            </option>
           </select>
           <label for="date" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Data</label>
-          <input id="date" v-model="diet.date" type="date" name="date" autocomplete="new-password" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <input
+            id="date"
+            v-model="diet.date"
+            type="date"
+            name="date"
+            autocomplete="new-password"
+            class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+            required
+          />
           <label for="time" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Hora</label>
-          <input id="time" v-model="diet.time" type="time" name="time" class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
+          <input
+            id="time"
+            v-model="diet.time"
+            type="time"
+            name="time"
+            class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
+            required
+          />
           <!-- <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
             Cadastrar
           </button> -->
@@ -174,7 +235,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 /* eslint-disable camelcase */
 export default Vue.extend({
@@ -182,28 +243,29 @@ export default Vue.extend({
     return {
       isAlert: false,
       isLogged: false,
-      user :{
-        id: "",
-        name: "",
-        sex: "female",
-        birthDate: "2002-01-01",
+      user: {
+        id: '',
+        name: '',
+        sex: 'female',
+        birthDate: '2002-01-01',
         weight_kg: 0,
         height: 1.00,
-        activity: "lightly_active",
-        meal_plans: {}
+        activity: 'lightly_active',
+        meal_plans: null as Meal | null
       },
       diet: {
         carbs: 0,
         fat: 0,
         protein: 0,
-        meal: "breakfast",
+        meal: 'breakfast',
         diet_plans: null,
         foods: [],
-        date: null,
-        time: null,
+        date: null as string | null,
+        time: null as string | null,
         meal_goal: {}
       },
       search: {
+        foods: null as TBCA.Food[] | null,
         food: '',
         food_list: []
       },
@@ -220,59 +282,56 @@ export default Vue.extend({
     }
   },
   async created () {
-    const response = await this.$axios.get('https://trusty-pipe-277616.rj.r.appspot.com/tbca')
-    this.search.foods = response.data.tbca
+    const response = (await this.$axios.get<TBCA.Route>('/tbca')).data
+    this.search.foods = response.tbca
 
-    var date = new Date();
-    var dia  = date.getDate().toString().padStart(2, '0');
-    var mes  = (date.getMonth()+1).toString().padStart(2, '0');
-    var ano  = date.getFullYear();
-    this.diet.date = ano+"-"+mes+"-"+dia;
+    const date = new Date()
+    const dia = date.getDate().toString().padStart(2, '0')
+    const mes = (date.getMonth() + 1).toString().padStart(2, '0')
+    const ano = date.getFullYear()
+    this.diet.date = ano + '-' + mes + '-' + dia
 
-    var hour  = date.getHours().toString().padStart(2, '0');
-    var minute  = (date.getMinutes()).toString().padStart(2, '0');
-    this.diet.time = hour+":"+minute;
+    const hour = date.getHours().toString().padStart(2, '0')
+    const minute = (date.getMinutes()).toString().padStart(2, '0')
+    this.diet.time = hour + ':' + minute
 
     // is user logged?
-    this.isLogged = true;
-    if (this.user.id == ""){
-      this.isLogged = false;
-    }
-
+    this.isLogged = this.user.id !== ''
   },
   methods: {
-    signin (){
-      event.preventDefault();
-      var birthday = new Date(this.user.birthDate + 'T00:00:00');
-      var ageDifMs = Date.now() - birthday.getTime();
-      var ageDate = new Date(ageDifMs); // miliseconds from epoch
-      var age = Math.abs(ageDate.getUTCFullYear() - 1970);
+    getBioData () {
+      const birthday = new Date(this.user.birthDate + 'T00:00:00')
+      const ageDifMs = Date.now() - birthday.getTime()
+      const ageDate = new Date(ageDifMs) // milliseconds from epoch
+      const age = Math.abs(ageDate.getUTCFullYear() - 1970)
 
-      var weight_kg = this.user.weight_kg;
-      var height_cm = this.user.height * 100;
-      if (this.user.sex == "female"){
-        var bmr = 665.09 + (9.56 * weight_kg) + (1.84 * height_cm) - (4.67 * age)
-      } else {
-        var bmr = 66.47 + (13.75 * weight_kg) + (5 * height_cm) - (6.75 * age)
+      const weight_kg = this.user.weight_kg
+      const height_cm = this.user.height * 100
+      const bmr = this.user.sex === 'female'
+        ? 665.09 + (9.56 * weight_kg) + (1.84 * height_cm) - (4.67 * age)
+        : 66.47 + (13.75 * weight_kg) + (5 * height_cm) - (6.75 * age)
+
+      const active_level = this.user.activity
+
+      let total_calories : number
+      switch (active_level) {
+        case 'total_calories':
+          total_calories = 1.2 * bmr
+          break
+        case 'lightly_active':
+          total_calories = 1.375 * bmr
+          break
+        case 'moderately_active':
+          total_calories = 1.55 * bmr
+          break
+        case 'very_active':
+          total_calories = 1.725 * bmr
+          break
+        default:
+          total_calories = 1.9 * bmr
       }
 
-      var active_level = this.user.activity;
-      if (active_level == 'sedentary') {
-        var total_calories = 1.2 * bmr;
-      }
-      else if (active_level == 'lightly_active') {
-        var total_calories = 1.375 * bmr;
-      }
-      else if (active_level == 'moderately_active') {
-        var total_calories = 1.55 * bmr;
-      }
-      else if (active_level == 'very_active') {
-        var total_calories = 1.725 * bmr;
-      }
-      else { 
-        var total_calories = 1.9 * bmr;
-      }
-      this.isLogged = true;
+      this.isLogged = true
       this.user.meal_plans = {
         meal: {
           carbs_goal: ((total_calories * 0.25 * 0.5) / 4).toFixed(0),
@@ -285,14 +344,13 @@ export default Vue.extend({
           fat_goal: ((total_calories * 0.125 * 0.3) / 9).toFixed(0)
         }
       }
-      this.diet.meal_goal = this.user.meal_plans.meal;
+      this.diet.meal_goal = this.user.meal_plans.meal
     },
     changeMeal () {
-      if (this.diet.meal == "snack1" || this.diet.meal == "snack2") {
-        this.diet.meal_goal = this.user.meal_plans.snack;
-      } 
-      else {
-        this.diet.meal_goal = this.user.meal_plans.meal;
+      if (this.diet.meal === 'snack1' || this.diet.meal === 'snack2') {
+        this.diet.meal_goal = this.user.meal_plans.snack
+      } else {
+        this.diet.meal_goal = this.user.meal_plans.meal
       }
     },
     searchFood () {
@@ -377,8 +435,8 @@ export default Vue.extend({
         }
       }
     },
-    closeAlert(){
-      this.isAlert = false;
+    closeAlert () {
+      this.isAlert = false
     }
   }
 })
