@@ -1,5 +1,5 @@
-input {
-  @apply py-2 px-3 rounded border-2 border-blue-300;
+input, select {
+  @apply py-2 px-3 rounded border-2 border-blue-500;
 
   &:focus {
     @apply shadow-outline outline-none;
@@ -22,7 +22,7 @@ select[data-placeholder-selected='true'] {
     @apply cursor-pointer;
   }
   & .radio-decorator {
-    @apply inline-block w-6 h-6 rounded-full bg-blue-100 border-blue-400 border-2 text-base;
+    @apply inline-block w-6 h-6 rounded-full bg-blue-100 border-blue-500 border-2 text-base;
   }
   & [type='radio']:checked + .radio-decorator {
     background: radial-gradient(
