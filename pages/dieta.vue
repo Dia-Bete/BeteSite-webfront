@@ -13,12 +13,12 @@
     <div class="flex flex-col items-stretch gap-6">
       <div class="grid grid-flow-col place-items-center bg-blue-700 text-white rounded p-4 shadow-lg">
         <div
-          v-for="(item,index) in [[diet.protein, 25, 'Proteínas'], [diet.carbs, 64, 'Carboidratos'], [diet.fat, 17, 'Gorduras']]"
+          v-for="(item,index) in [[protein, 25, 'Proteínas'], [carbs, 64, 'Carboidratos'], [fat, 17, 'Gorduras']]"
           :key="index"
           class="flex flex-col items-center"
         >
           <p class="text-2xl">
-            {{ item[0] }}/{{ item[1] }} <span class="text-base" style="margin-left: -0.5ch">g</span>
+            {{ item[0] }}/{{ item[1] }} <span class="text-base" style="margin-left: -0.75ch">g</span>
           </p>
           <p class="text-lg">
             {{ item[2] }}
@@ -27,18 +27,18 @@
       </div>
       <!--    <div class="grid grid-flow-col content-center auto-cols-max place-items-center">-->
       <!--      <div class="px-4">-->
-      <!--        <strong><span>{{ diet.protein.toFixed(2) }}</span> / <span>{{ diet.meal_goal.protein_goal-->
+      <!--        <strong><span>{{ form.protein.toFixed(2) }}</span> / <span>{{ form.meal_goal.protein_goal-->
       <!--        }}</span></strong><br />-->
       <!--        <span>Proteínas</span>-->
       <!--      </div>-->
       <!--      <div class="px-4">-->
       <!--        <div class="text-xl">-->
-      <!--          <strong><span>{{ diet.carbs.toFixed(2) }}</span> / <span>{{ diet.meal_goal.carbs_goal }}</span></strong>-->
+      <!--          <strong><span>{{ form.carbs.toFixed(2) }}</span> / <span>{{ form.meal_goal.carbs_goal }}</span></strong>-->
       <!--        </div>-->
       <!--        <span>Carboidratos</span>-->
       <!--      </div>-->
       <!--      <div class="px-4">-->
-      <!--        <strong><span>{{ diet.fat.toFixed(2) }}</span> / <span>{{ diet.meal_goal.fat_goal }}</span></strong><br />-->
+      <!--        <strong><span>{{ form.fat.toFixed(2) }}</span> / <span>{{ form.meal_goal.fat_goal }}</span></strong><br />-->
       <!--        <span>Gorduras</span>-->
       <!--      </div>-->
       <!--    </div>-->
@@ -47,26 +47,60 @@
       <!--      :add-food="addFood"-->
       <!--      :cancel-food="cancelFood"-->
       <!--      :delete-food="deleteFood"-->
-      <!--      :diet="diet"-->
+      <!--      :form="form"-->
       <!--      :select="select"-->
       <!--    />-->
 
-      <form>
-        <fieldset class="bg-white rounded shadow p-4 grid grid-cols-2 grid-rows-2 col-gap-8 row-gap-4">
+      <form class="flex flex-col gap-6">
+        <fieldset class="box flex flex-col">
+          <p v-if="form.portions.length === 0" class="pt-4 pb-6 px-4">
+            Opa, você ainda não adicionou nenhuma porção à sua refeição...
+          </p>
+          <table v-else class="table-fixed w-full">
+            <tbody>
+              <tr
+                v-for="(portion, index) in form.portions"
+                :key="index"
+                :class="{'bg-gray-200': portionClicked === index}"
+                @click="portionClicked = index"
+                @mouseleave="portionClicked = null"
+              >
+                <td class="py-3 pl-4">
+                  {{ portion.food.label }}
+                </td>
+                <td v-if="portionClicked !== index" class="border-l-2 border-gray-400 text-right pr-4" style="width: 10ch">
+                  {{ `${portion.quantity} x ${portion.measure}${portion.food.measures[portion.measure].unit}` }}
+                </td>
+                <td v-else class="border-l-2 border-gray-400 pr-1" style="width: 10ch">
+                  <div class="w-full flex justify-evenly">
+                    <button><font-awesome-icon icon="pen-square" class="text-gray-700 text-3xl" @click="portionPicker = portion" /></button>
+                    <button><font-awesome-icon icon="minus-square" class="text-red-700 text-3xl" @click="deleteFood(index)" /></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <PortionPicker :visible="portionPicker" @close="portionPicker = false" @edit="editFood" @submit="addFood"></PortionPicker>
+          <Divider />
+          <button class="btn btn-tertiary" type="button" @click="portionPicker = true">
+            Adicionar Porção
+          </button>
+        </fieldset>
+        <fieldset class="box p-4 grid grid-cols-2 grid-rows-2 col-gap-8 row-gap-4">
           <input
-            v-model="diet.time"
+            v-model="form.time"
             type="time"
             class="text-center"
             required
           />
           <input
-            v-model="diet.date"
+            v-model="form.date"
             type="date"
             class="text-center"
             required
           />
           <select
-            v-model="diet.meal"
+            v-model="form.meal"
             name="meal"
             required
             class="col-span-2"
@@ -100,24 +134,35 @@
   </section>
 </template>
 
+<style lang="postcss">
+
+</style>
+
 <script lang="ts">
 import Vue from 'vue'
 
 export default Vue.extend({
-  data () {
-    return {
-      isAlert: false,
-      diet: {
-        carbs: 0,
-        fat: 0,
-        protein: 0,
-        // diet_plans: null,
-        // foods: [] as any[],
-        // meal_goal: {} as MealGoal,
-        meal: '',
-        date: null as string | null,
-        time: null as string | null
-      }
+  data: () => ({
+    portionPicker: false as boolean | Portion,
+    portionClicked: null as null | number,
+    form: {
+      // diet_plans: null,
+      portions: [] as Portion[],
+      meal_goal: {} as MealGoal,
+      meal: '',
+      date: '',
+      time: ''
+    }
+  }),
+  computed: {
+    fat () {
+      return Math.ceil(this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].fat * portion.quantity, 0))
+    },
+    carbs () {
+      return Math.ceil(this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].carbs * portion.quantity, 0))
+    },
+    protein () {
+      return Math.ceil(this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].protein * portion.quantity, 0))
     }
   },
   // TODO: Remover?
@@ -126,65 +171,32 @@ export default Vue.extend({
     // const dia = date.getDate().toString().padStart(2, '0')
     // const mes = (date.getMonth() + 1).toString().padStart(2, '0')
     // const ano = date.getFullYear()
-    // this.diet.date = ano + '-' + mes + '-' + dia
+    // this.form.date = ano + '-' + mes + '-' + dia
     //
     // const hour = date.getHours().toString().padStart(2, '0')
     // const minute = (date.getMinutes()).toString().padStart(2, '0')
-    // this.diet.time = hour + ':' + minute
+    // this.form.time = hour + ':' + minute
   },
   methods: {
     changeMeal () {
-      if (this.diet.meal === 'snack1' || this.diet.meal === 'snack2') {
-        // this.diet.meal_goal = this.$store.state.account.meal_plans!.snack
+      if (this.form.meal === 'snack1' || this.form.meal === 'snack2') {
+        // this.form.meal_goal = this.$store.state.account.meal_plans!.snack
       } else {
-        // this.diet.meal_goal = this.$store.state.account.meal_plans!.meal
+        // this.form.meal_goal = this.$store.state.account.meal_plans!.meal
       }
+    },
+    addFood (portion:Portion) {
+      this.form.portions.push(portion)
+      this.portionPicker = false
+    },
+    editFood (portion: Portion) {
+      const index = this.form.portions.findIndex(p => p === this.portionPicker)
+      this.$set(this.form.portions, index, portion)
+      this.portionPicker = false
+    },
+    deleteFood (index: number) {
+      this.form.portions.splice(index, 1)
     }
-    // addFood () {
-    //   const measure_info = this.select.food.measure_list.filter(item => item.id === this.select.food.measure)[0].info
-    //
-    //   this.diet.foods.push({
-    //     food_id: this.select.food.id,
-    //     label: this.select.food.label,
-    //     measure: this.select.food.measure,
-    //     quantity: this.select.food.portion,
-    //     measure_info
-    //   })
-    //
-    //   this.diet.fat += (measure_info.fat * parseFloat(this.select.food.portion))
-    //   this.diet.carbs += (measure_info.carbs * parseFloat(this.select.food.portion))
-    //   this.diet.protein += (measure_info.protein * parseFloat(this.select.food.portion))
-    //
-    //   const {
-    //     meal_goal,
-    //     fat,
-    //     carbs
-    //   } = this.diet
-    //   if (fat > meal_goal.fat_goal || carbs > meal_goal.carbs_goal ||
-    //     this.diet.protein > meal_goal.protein_goal) {
-    //     this.isAlert = true
-    //   }
-    //
-    //   this.select = {
-    //     show: false,
-    //     food: {
-    //       id: '',
-    //       label: '',
-    //       measure: '',
-    //       portion: '',
-    //       measure_list: []
-    //     }
-    //   }
-    // },
-    // deleteFood (food_id: string) {
-    //   const food = this.diet.foods.filter(item => item.food_id === food_id)[0]
-    //   this.diet.foods = this.diet.foods.filter(item => item.food_id !== food_id)
-    //
-    //   const measure_info = food.measure_info
-    //   this.diet.fat -= (measure_info.fat * food.quantity)
-    //   this.diet.carbs -= (measure_info.carbs * food.quantity)
-    //   this.diet.protein -= (measure_info.protein * food.quantity)
-    // },
     // cancelFood () {
     //   this.select = {
     //     show: false,

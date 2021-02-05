@@ -28,5 +28,5 @@
 }
 
 .btn-tertiary {
-  @apply font-body font-medium text-blue-800;
+  @apply font-body font-medium text-blue-700;
 }

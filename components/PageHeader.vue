@@ -6,9 +6,9 @@
       </h2>
       <button class="pl-2" @click="helpText = !helpText">
         <font-awesome-icon
-          icon="chevron-left"
+          icon="chevron-down"
           class="text-blue-900 text-xl transition duration-300 transform"
-          :class="helpText? '-rotate-90' : ''"
+          :class="helpText? '-rotate-180' : ''"
         />
       </button>
     </div>

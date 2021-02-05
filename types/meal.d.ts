@@ -1,4 +1,16 @@
-declare interface Meal {
-  meal: { carbs_goal: string; protein_goal: string; fat_goal: string; };
-  snack: { carbs_goal: string; protein_goal: string; fat_goal: string; };
+interface MealGoal {
+  carbsGoal: number;
+  proteinGoal: number;
+  fatGoal: number;
+}
+
+interface Meal {
+  meal: MealGoal;
+  snack: MealGoal;
+}
+
+interface Portion {
+  food: TBCA.Food,
+  measure: string,
+  quantity: number
 }
