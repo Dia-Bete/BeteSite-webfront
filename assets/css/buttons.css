@@ -1,9 +1,9 @@
 /* TODO: organizar como plugin para contornar bug:
  * https://github.com/nuxt-community/tailwindcss-module/issues/140
  */
-
+/* TODO: Refatorar como componentes? */
 .btn {
-  @apply block text-center font-medium px-2 py-1 rounded-md transition-colors duration-150;
+  @apply block text-center px-2 transition-colors duration-150 rounded py-3;
 
   &:disabled {
     @apply cursor-not-allowed text-gray-700;
@@ -15,7 +15,7 @@
 }
 
 .btn-secondary {
-  @apply bg-blue-100 border-2 border-solid border-blue-600 text-blue-700;
+  @apply border-2 border-solid border-blue-500 text-blue-700 font-display font-semibold;
 
   &:hover,
   &:focus {
@@ -28,5 +28,5 @@
 }
 
 .btn-tertiary {
-  @apply font-body font-medium text-blue-800;
+  @apply font-body font-medium text-blue-700;
 }

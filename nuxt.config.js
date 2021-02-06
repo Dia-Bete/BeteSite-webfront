@@ -92,7 +92,7 @@ export default {
 
   fontawesome: {
     icons: {
-      solid: ['faBars', 'faChevronLeft', 'faSearch', 'faBackspace', 'faFrown']
+      solid: ['faBars', 'faChevronDown', 'faSearch', 'faBackspace', 'faFrown', 'faMinusSquare', 'faPenSquare']
     }
   }
 }

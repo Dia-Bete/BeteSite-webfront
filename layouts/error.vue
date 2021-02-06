@@ -1,6 +1,6 @@
 <template>
   <div class="h-screen pb-12 flex justify-center items-center flex-col">
-    <h1 v-if="error.statusCode === 404" class="message">
+    <h1 v-if="error && error.statusCode && error.statusCode === 404" class="message">
       Página não encontrada :(
     </h1>
     <h1 v-else class="message">

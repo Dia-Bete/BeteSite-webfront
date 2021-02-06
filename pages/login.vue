@@ -51,8 +51,22 @@ export default Vue.extend({
     }
   },
   methods: {
-    submit (data: { email: string, password: string }) {
-      this.$store.dispatch('signIn', data)
+    async submit ({
+      email,
+      password
+    }: { email: string, password: string }) {
+      try {
+        const response = await this.$axios.$post('/signin', {
+          email,
+          password
+        })
+        this.$store.commit('signIn', response.user)
+      } catch (error) {
+        if (!error.response || error.response.status !== 401) {
+          throw error
+        }
+        // this.alert = error.response?.data
+      }
     }
   }
 })
