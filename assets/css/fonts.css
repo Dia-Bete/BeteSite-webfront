@@ -5,8 +5,18 @@
   font-weight: 400;
   font-style: normal;
   src: url('~assets/fonts/Montserrat/Montserrat-Regular.woff2') format('woff2'),
-    url('~assets/fonts/Montserrat/Montserrat-Regular.woff') format('woff');
+  url('~assets/fonts/Montserrat/Montserrat-Regular.woff') format('woff');
 }
+
+/** Montserrat 500 **/
+@font-face {
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-style: normal;
+  src: url('~assets/fonts/Montserrat/Montserrat-500.woff2') format('woff2'),
+  url('~assets/fonts/Montserrat/Montserrat-500.woff') format('woff');
+}
+
 
 /** Montserrat SemiBold **/
 @font-face {
@@ -14,7 +24,7 @@
   font-weight: 600;
   font-style: normal;
   src: url('~assets/fonts/Montserrat/Montserrat-SemiBold.woff2') format('woff2'),
-    url('~assets/fonts/Montserrat/Montserrat-SemiBold.woff') format('woff');
+  url('~assets/fonts/Montserrat/Montserrat-SemiBold.woff') format('woff');
 }
 
 /** Montserrat Bold **/
@@ -23,7 +33,7 @@
   font-weight: 700;
   font-style: normal;
   src: url('~assets/fonts/Montserrat/Montserrat-Bold.woff2') format('woff2'),
-    url('~assets/fonts/Montserrat/Montserrat-Bold.woff') format('woff');
+  url('~assets/fonts/Montserrat/Montserrat-Bold.woff') format('woff');
 }
 
 /** =================== ROBOTO =================== **/
@@ -34,8 +44,8 @@
   font-style: normal;
   font-weight: 400;
   src: local('Roboto'), local('Roboto Regular'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-regular.woff2') format('woff2'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-regular.woff') format('woff');
+  url('~assets/fonts/Roboto/roboto-v20-latin-regular.woff2') format('woff2'),
+  url('~assets/fonts/Roboto/roboto-v20-latin-regular.woff') format('woff');
 }
 
 /* Roboto Medium */
@@ -44,8 +54,8 @@
   font-style: normal;
   font-weight: 500;
   src: local('Roboto Medium'), local('Roboto Medium'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-500.woff2') format('woff2'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-500.woff') format('woff');
+  url('~assets/fonts/Roboto/roboto-v20-latin-500.woff2') format('woff2'),
+  url('~assets/fonts/Roboto/roboto-v20-latin-500.woff') format('woff');
 }
 
 /* Roboto Bold */
@@ -54,8 +64,8 @@
   font-style: normal;
   font-weight: 700;
   src: local('Roboto Bold'), local('Roboto Bold'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-700.woff2') format('woff2'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-700.woff') format('woff');
+  url('~assets/fonts/Roboto/roboto-v20-latin-700.woff2') format('woff2'),
+  url('~assets/fonts/Roboto/roboto-v20-latin-700.woff') format('woff');
 }
 
 /* Roboto Italic */
@@ -64,8 +74,8 @@
   font-style: italic;
   font-weight: 400;
   src: local('Roboto Italic'), local('Roboto Italic'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-italic.woff2') format('woff2'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-italic.woff') format('woff');
+  url('~assets/fonts/Roboto/roboto-v20-latin-italic.woff2') format('woff2'),
+  url('~assets/fonts/Roboto/roboto-v20-latin-italic.woff') format('woff');
 }
 
 /* Roboto Bold Italic */
@@ -74,6 +84,6 @@
   font-style: italic;
   font-weight: 700;
   src: local('Roboto Bold Italic'), local('Roboto BoldItalic'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-700italic.woff2') format('woff2'),
-    url('~assets/fonts/Roboto/roboto-v20-latin-700italic.woff') format('woff');
+  url('~assets/fonts/Roboto/roboto-v20-latin-700italic.woff2') format('woff2'),
+  url('~assets/fonts/Roboto/roboto-v20-latin-700italic.woff') format('woff');
 }

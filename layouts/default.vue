@@ -1,11 +1,19 @@
 <template>
   <div class="layout">
     <Navbar />
-    <main class="absolute w-full mt-16 pt-8 px-4 flex flex-col place-content-start place-items-start flex-no-wrap overflow-y-auto">
+    <main
+      class="absolute w-full mt-16 pt-8 px-4 flex flex-col place-content-start place-items-start flex-no-wrap overflow-y-auto"
+    >
       <Nuxt />
     </main>
   </div>
 </template>
+
+<script>
+import 'animate.css'
+
+export default {}
+</script>
 
 <style lang="postcss">
 :root {
@@ -42,9 +50,3 @@ main::after {
   @apply w-full block h-8;
 }
 </style>
-
-<script>
-import 'animate.css'
-
-export default {}
-</script>

@@ -13,7 +13,11 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/BeteSite-webfront/favicon.ico' }]
+    link: [{
+      rel: 'icon',
+      type: 'image/x-icon',
+      href: '/BeteSite-webfront/favicon.ico'
+    }]
   },
   /*
   ** Zero config PWA solution for Nuxt.js

@@ -112,20 +112,13 @@ import { UserBioData } from '~/types/store'
 
 export default Vue.extend({
   data: () => ({
-    formElement: null as HTMLFormElement,
-    form: {
-      sex: null,
-      birthDate: null,
-      weightKg: null,
-      height: null,
-      activity: null
-    } as Partial<UserBioData>
+    form: {} as Partial<UserBioData>
   }),
   computed: {
     valid () {
       const f = this.form
-      for (const p in f) {
-        if (!f[p]) {
+      for (const p of Object.values(f)) {
+        if (!p) {
           return false
         }
       }
@@ -135,16 +128,11 @@ export default Vue.extend({
   },
   methods: {
     submit () {
-      const age = (new Date().getUTCFullYear()) - new Date(this.form.birthDate).getUTCFullYear()
+      const age = (new Date().getUTCFullYear()) - new Date(this.form.birthDate!).getUTCFullYear()
 
-      let bmr
-      switch (this.form.sex) {
-        case 'male':
-          bmr = 66.47 + (13.75 * this.form.weightKg) + (5 * this.form.height) - (6.75 * age)
-          break
-        case 'female':
-          bmr = 665.09 + (9.56 * this.form.weightKg) + (1.84 * this.form.height) - (4.67 * age)
-      }
+      const bmr = this.form.sex === 'female'
+        ? 665.09 + (9.56 * this.form.weightKg!) + (1.84 * this.form.height!) - (4.67 * age)
+        : 66.47 + (13.75 * this.form.weightKg!) + (5 * this.form.height!) - (6.75 * age)
 
       let totalCalories
       switch (this.form.activity) {

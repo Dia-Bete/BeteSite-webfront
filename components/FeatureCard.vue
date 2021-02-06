@@ -1,5 +1,5 @@
 <template>
-  <article class="shadow rounded z-20 pb-4" style="width: 40ch">
+  <article class="shadow rounded z-20 pb-4 hover:shadow-lg transition-shadow duration-150" style="width: 40ch">
     <header class="bg-blue-200 py-3 px-4 rounded-t">
       <h3 class="font-display font-medium text-xl text-center">
         {{ title }}

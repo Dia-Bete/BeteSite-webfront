@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap gap-6 justify-center">
+  <div class="flex flex-wrap gap-6 justify-center w-full">
     <FeatureCard
       title="Dieta"
       description="Planeje sua dieta com base na nossa calculadora."

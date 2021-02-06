@@ -72,10 +72,6 @@ export default Vue.extend({
       required: true
     }
   },
-  async fetch () {
-    const response = (await this.$axios.get<TBCA.Route>('/tbca')).data
-    this.tbca = response.tbca
-  },
   data: () => ({
     tbca: null as TBCA.Food[] | null,
     search: '',
@@ -83,6 +79,10 @@ export default Vue.extend({
     measureType: '',
     measureQuantity: 1
   }),
+  async fetch () {
+    const response = (await this.$axios.get<TBCA.Route>('/tbca')).data
+    this.tbca = response.tbca
+  },
   computed: {
     searchSuggestions (): TBCA.Food[] {
       if (!this.search) { return [] }

@@ -5,6 +5,10 @@
  ** Default: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
  */
 module.exports = {
+  future: {
+    purgeLayersByDefault: true,
+    defaultLineHeights: true
+  },
   theme: {
     fontFamily: {
       display: ['Montserrat', 'sans-serif'],
