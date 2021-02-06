@@ -1,10 +1,7 @@
 <template>
-  <div
-    v-show="visible"
-    class="fixed z-30 inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4"
-    role="dialog"
-    aria-modal="true"
-    aria-describedby="portion-modal-header"
+  <Modal
+    :show="show"
+    describedby="portion-modal-header"
   >
     <form class="bg-white w-full max-w-md opacity-100 rounded-lg overflow-hidden flex flex-col shadow-2xl" novalidate @submit.prevent>
       <header id="portion-modal-header" class="bg-blue-100 text-blue-800 p-4 font-display">
@@ -13,7 +10,7 @@
       <div v-if="selected == null" class="m-4 mb-6">
         <input
           v-model.trim="search"
-          :disabled="typeof visible != 'boolean'"
+          :disabled="typeof show != 'boolean'"
           type="text"
           class="w-full"
           placeholder="O que você comeu nesta refeição?"
@@ -56,7 +53,7 @@
         </button>
       </div>
     </form>
-  </div>
+  </Modal>
 </template>
 
 <style lang="postcss" scoped>
@@ -70,7 +67,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   props: {
-    visible: {
+    show: {
       type: [Boolean, Object],
       required: true
     }
@@ -96,7 +93,7 @@ export default Vue.extend({
     }
   },
   watch: {
-    visible (newVal: boolean | Portion) {
+    show (newVal: boolean | Portion) {
       if (typeof newVal === 'boolean') { return }
 
       this.selected = newVal.food
@@ -106,7 +103,7 @@ export default Vue.extend({
   },
   methods: {
     submit () {
-      this.$emit(typeof this.visible === 'boolean' ? 'submit' : 'edit', {
+      this.$emit(typeof this.show === 'boolean' ? 'submit' : 'edit', {
         food: this.selected,
         measure: this.measureType,
         quantity: this.measureQuantity

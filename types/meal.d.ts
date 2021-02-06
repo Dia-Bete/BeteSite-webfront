@@ -4,7 +4,7 @@ interface MealGoal {
   fatGoal: number;
 }
 
-interface Meal {
+interface MealPlans {
   meal: MealGoal;
   snack: MealGoal;
 }

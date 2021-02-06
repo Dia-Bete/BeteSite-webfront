@@ -1,7 +1,7 @@
 /* TODO: organizar como plugin para contornar bug:
  * https://github.com/nuxt-community/tailwindcss-module/issues/140
  */
-
+/* TODO: Refatorar como componentes? */
 .btn {
   @apply block text-center px-2 transition-colors duration-150 rounded py-3;
 

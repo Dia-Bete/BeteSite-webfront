@@ -1,113 +1,191 @@
-<!--<template>-->
-<!--  <section>-->
-<!--    <form>-->
-<!--      <header>-->
-<!--        <h2>Informações Físicas</h2>-->
-<!--        <p>As informações que você está inserindo aqui não serão salvas, e só serão utilizadas para essa sessão.</p>-->
-<!--      </header>-->
-<!--      <label for="input_sexo" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Sexo-->
-<!--        <select-->
-<!--          id="input_sexo"-->
-<!--          v-model="form.sex"-->
-<!--          name="sex"-->
-<!--          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200"-->
-<!--        >-->
-<!--          <option value="female">-->
-<!--            Feminino-->
-<!--          </option>-->
-<!--          <option value="male">-->
-<!--            Masculino-->
-<!--          </option>-->
-<!--        </select></label>-->
-<!--      <label class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Data de-->
-<!--        Nascimento-->
-<!--        <input-->
-<!--          v-model="form.birthDate"-->
-<!--          type="date"-->
-<!--          name="date"-->
-<!--          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"-->
-<!--          required-->
-<!--        /></label>-->
-<!--      <label class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Peso (Kg)-->
-<!--        <input-->
-<!--          v-model="form.weightKg"-->
-<!--          type="number"-->
-<!--          name="weight_kg"-->
-<!--          class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"-->
-<!--          required-->
-<!--        /></label>-->
-<!--      <label for="height" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Altura (m)</label>-->
-<!--      <input-->
-<!--        id="height"-->
-<!--        v-model="form.height"-->
-<!--        type="number"-->
-<!--        step=".01"-->
-<!--        name="height"-->
-<!--        class="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"-->
-<!--        required-->
-<!--      />-->
-<!--      <label for="activity" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Sexo</label>-->
-<!--      <select-->
-<!--        id="activity"-->
-<!--        v-model="form.activity"-->
-<!--        name="activity"-->
-<!--        class="block w-full p-3 mt-2 text-gray-700 bg-gray-200"-->
-<!--      >-->
-<!--        <option selected value="sedentary">-->
-<!--          Sedentário-->
-<!--        </option>-->
-<!--        <option value="lightly_active">-->
-<!--          Pouco Ativo-->
-<!--        </option>-->
-<!--        <option selected value="moderately_active">-->
-<!--          Moderadamente Ativo-->
-<!--        </option>-->
-<!--        <option value="very_active">-->
-<!--          Muito Ativo-->
-<!--        </option>-->
-<!--        <option selected value="extra_active">-->
-<!--          Exageradamente Ativo-->
-<!--        </option>-->
-<!--      </select>-->
-<!--      <button-->
-<!--        type="submit"-->
-<!--        class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"-->
-<!--        @click="submit"-->
-<!--      >-->
-<!--        Submeter-->
-<!--      </button>-->
-<!--    </form>-->
-<!--  </section>-->
-<!--</template>-->
+<template>
+  <Modal
+    :show="$store.state.bioData === null"
+    describedby="portion-modal-header"
+  >
+    <form
+      class="bg-white w-full max-w-md opacity-100 rounded-lg overflow-hidden flex flex-col shadow-2xl"
+      @submit.prevent="submit"
+    >
+      <header id="portion-modal-header">
+        <h2 class="bg-blue-100 text-blue-800 p-4 font-display">
+          Informações Físicas
+        </h2>
+        <p class="px-4 py-3 bg-gray-200 text-sm lg:text-base">
+          As informações que você está inserindo aqui não são salvas, e só serão utilizadas para essa sessão.
+        </p>
+      </header>
+      <fieldset class="px-4">
+        <label class="horizontal">
+          <span>Sexo</span>
+          <select v-model="form.sex" required>
+            <option value="female">
+              Feminino
+            </option>
+            <option value="male">
+              Masculino
+            </option>
+          </select>
+        </label>
+        <label class="horizontal">
+          <span>Data de Nascimento</span>
+          <input
+            v-model="form.birthDate"
+            type="date"
+            required
+          />
+        </label>
+        <label class="horizontal">
+          <span>Peso</span>
+          <!-- TODO: Essas assumptions são válidas? -->
+          <input
+            v-model.number="form.weightKg"
+            placeholder="quilogramas"
+            type="number"
+            step=".1"
+            min="40"
+            max="250"
+            required
+          />
+        </label>
+        <label class="horizontal">
+          <span>Altura</span>
+          <input
+            v-model.number="form.height"
+            placeholder="centímetros"
+            type="number"
+            step="1"
+            min="40"
+            max="250"
+            required
+          />
+        </label>
+        <label class="flex flex-col items-stretch mt-4 mb-6">
+          <span>Nível de Atividade</span>
+          <select
+            v-model="form.activity"
+            required
+          >
+            <option selected value="sedentary">
+              Sedentário
+            </option>
+            <option value="lightly_active">
+              Pouco Ativo
+            </option>
+            <option selected value="moderately_active">
+              Moderadamente Ativo
+            </option>
+            <option value="very_active">
+              Muito Ativo
+            </option>
+            <option selected value="extra_active">
+              Exageradamente Ativo
+            </option>
+          </select>
+        </label>
+      </fieldset>
+      <Divider />
+      <button type="submit" class="btn btn-secondary my-6 mx-4" :disabled="!valid">
+        Confirmar
+      </button>
+    </form>
+  </Modal>
+</template>
 
-<!--<script lang="ts">-->
-<!--import Vue from 'vue'-->
-<!--import { UserBioData } from '~/types/store'-->
+<style lang="postcss" scoped>
+label.horizontal {
+  @apply flex items-baseline my-4;
+}
 
-<!--export default Vue.extend({-->
-<!--  props: {-->
-<!--    show: {-->
-<!--      type: Boolean,-->
-<!--      required: true-->
-<!--    }-->
-<!--  },-->
-<!--  data: () => ({-->
-<!--    form: {} as Partial<UserBioData>-->
-<!--  }),-->
-<!--  methods: {-->
-<!--    submit () {-->
-<!--      const birthday = new Date(this.form.birthDate)-->
-<!--      const age = (new Date().getUTCFullYear()) - birthday.getUTCFullYear()-->
+label.horizontal > * {
+  @apply flex-grow
+}
 
-<!--      const weight = this.form.weightKg!-->
-<!--      const height = this.form.height * 100-->
-<!--      // ?-->
-<!--      const bmr = this.form.sex === 'female'-->
-<!--        ? 665.09 + (9.56 * weight) + (1.84 * height) - (4.67 * age)-->
-<!--        : 66.47 + (13.75 * weight) + (5 * height) - (6.75 * age)-->
+label.horizontal > input, label.horizontal > select {
+  max-width: min(50%, 12rem);
+}
+</style>
 
-<!--      const activityLevel = this.form.activity-->
-<!--    }-->
-<!--  }-->
-<!--})-->
-<!--</script>-->
+<script lang="ts">
+import Vue from 'vue'
+import { UserBioData } from '~/types/store'
+
+export default Vue.extend({
+  data: () => ({
+    formElement: null as HTMLFormElement,
+    form: {
+      sex: null,
+      birthDate: null,
+      weightKg: null,
+      height: null,
+      activity: null
+    } as Partial<UserBioData>
+  }),
+  computed: {
+    valid () {
+      const f = this.form
+      for (const p in f) {
+        if (!f[p]) {
+          return false
+        }
+      }
+
+      return true
+    }
+  },
+  methods: {
+    submit () {
+      const age = (new Date().getUTCFullYear()) - new Date(this.form.birthDate).getUTCFullYear()
+
+      let bmr
+      switch (this.form.sex) {
+        case 'male':
+          bmr = 66.47 + (13.75 * this.form.weightKg) + (5 * this.form.height) - (6.75 * age)
+          break
+        case 'female':
+          bmr = 665.09 + (9.56 * this.form.weightKg) + (1.84 * this.form.height) - (4.67 * age)
+      }
+
+      let totalCalories
+      switch (this.form.activity) {
+        case 'sedentary':
+          totalCalories = 1.2 * bmr
+          break
+        case 'lightly_active':
+          totalCalories = 1.375 * bmr
+          break
+        case 'moderately_active':
+          totalCalories = 1.55 * bmr
+          break
+        case 'very_active':
+          totalCalories = 1.725 * bmr
+          break
+        default:
+          totalCalories = 1.9 * bmr
+      }
+
+      const mealPlans = {
+        meal: {
+          carbsGoal: (totalCalories * 0.25 * 0.5) / 4,
+          proteinGoal: (totalCalories * 0.25 * 0.2) / 4,
+          fatGoal: (totalCalories * 0.25 * 0.3) / 9
+        },
+        snack: {
+          carbsGoal: (totalCalories * 0.125 * 0.5) / 4,
+          proteinGoal: (totalCalories * 0.125 * 0.2) / 4,
+          fatGoal: (totalCalories * 0.125 * 0.3) / 9
+        }
+      }
+
+      this.$store.commit('setBioData', {
+        sex: this.form.sex,
+        birthDate: this.form.birthDate,
+        weightKg: this.form.weightKg,
+        height: this.form.height,
+        activity: this.form.activity,
+        mealPlans
+      })
+    }
+  }
+})
+</script>
