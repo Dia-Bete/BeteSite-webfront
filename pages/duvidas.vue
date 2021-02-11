@@ -1,6 +1,6 @@
 <template>
   <section class="mx-auto w-full max-w-lg flex flex-col items-stretch gap-5">
-    <PageHeader title="Dúvidas - Perguntas e Respostas" />
+    <PageHeader title="Dúvidas - Perguntas e Respostas" description="Digite aqui sua pergunta ou dúvida e verifique as respostas da nossa assistente. Avalie se você está satisfeit(a) com a resposta recebida." />
     <form
       class="p-4 bg-blue-700 rounded shadow-md flex flex-row gap-2 justify-between items-center"
       @submit.prevent="submit"
