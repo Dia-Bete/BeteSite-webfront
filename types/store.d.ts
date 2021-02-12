@@ -1,5 +1,6 @@
-import { Store } from 'vuex'
-import { state } from '~/store'
+import type { Store } from 'vuex'
+import type { state } from '~/store'
+import type { MealPlans } from '~/types/meal'
 
 declare type RootState = ReturnType<typeof state>
 

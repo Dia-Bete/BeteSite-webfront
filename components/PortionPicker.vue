@@ -3,7 +3,11 @@
     :show="show"
     describedby="portion-modal-header"
   >
-    <form class="bg-white w-full max-w-md opacity-100 rounded-lg overflow-hidden flex flex-col shadow-2xl" novalidate @submit.prevent>
+    <form
+      class="bg-white w-full max-w-md opacity-100 rounded-lg overflow-hidden flex flex-col shadow-2xl"
+      novalidate
+      @submit.prevent
+    >
       <header id="portion-modal-header" class="bg-blue-100 text-blue-800 p-4 font-display">
         Adicionando uma porção de:
       </header>
@@ -57,13 +61,16 @@
 </template>
 
 <style lang="postcss" scoped>
-  .submit {
-    @apply px-8 font-display font-semibold rounded-lg;
-  }
+.submit {
+  @apply px-8 font-display font-semibold rounded-lg;
+}
 </style>
 
 <script lang="ts">
 import Vue from 'vue'
+import type { TBCA } from '~/types/tbca'
+import type { Portion } from '~/types/meal'
+import type { API } from '~/types/api'
 
 export default Vue.extend({
   props: {
@@ -80,12 +87,14 @@ export default Vue.extend({
     measureQuantity: 1
   }),
   async fetch () {
-    const response = (await this.$axios.get<TBCA.Route>('/tbca')).data
+    const response = await this.$axios.$get<API.Routes.TBCA>('/tbca')
     this.tbca = response.tbca
   },
   computed: {
     searchSuggestions (): TBCA.Food[] {
-      if (!this.search) { return [] }
+      if (!this.search) {
+        return []
+      }
 
       const query = this.search.toLowerCase()
       const includes = this.tbca?.filter(item => item.label.toLocaleLowerCase().includes(query))?.slice(0, 4)
@@ -94,7 +103,9 @@ export default Vue.extend({
   },
   watch: {
     show (newVal: boolean | Portion) {
-      if (typeof newVal === 'boolean') { return }
+      if (typeof newVal === 'boolean') {
+        return
+      }
 
       this.selected = newVal.food
       this.measureType = newVal.measure

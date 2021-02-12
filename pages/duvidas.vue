@@ -1,6 +1,9 @@
 <template>
   <section class="mx-auto w-full max-w-lg flex flex-col items-stretch gap-5">
-    <PageHeader title="Dúvidas - Perguntas e Respostas" description="Digite aqui sua pergunta ou dúvida e verifique as respostas da nossa assistente. Avalie se você está satisfeit(a) com a resposta recebida." />
+    <PageHeader
+      title="Dúvidas - Perguntas e Respostas"
+      description="Digite aqui sua pergunta ou dúvida e verifique as respostas da nossa assistente. Avalie se você está satisfeit(a) com a resposta recebida."
+    />
     <form
       class="p-4 bg-blue-700 rounded shadow-md flex flex-row gap-2 justify-between items-center"
       @submit.prevent="submit"
@@ -25,18 +28,17 @@
         </button>
       </div>
       <button
-        :type="querySent == query? 'reset' : 'submit'"
+        :type="querySent === query? 'reset' : 'submit'"
         class="btn rounded-md w-10 h-10 hover:shadow-xl hover:bg-white text-blue-800"
         :class="query ? 'bg-gray-100' : 'bg-gray-500'"
         :disabled="!query || state === 'loading'"
       >
-        <font-awesome-icon v-show="querySent != query || state!='loaded'" icon="search" size="lg" />
-        <font-awesome-icon v-show="querySent == query && state=='loaded'" icon="backspace" />
+        <font-awesome-icon v-show="querySent !== query || state!=='loaded'" icon="search" size="lg" />
+        <font-awesome-icon v-show="querySent === query && state==='loaded'" icon="backspace" />
       </button>
     </form>
     <template v-if="state === 'loading'">
-      <Loader>
-      </Loader>
+      <Loader />
     </template>
     <template v-else-if="answers.length > 0">
       <div class="grid grid-cols-1 grid-flow-row gap-4 overflow-hidden">
@@ -86,14 +88,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { API } from '~/types/api'
+import Loader from '~/components/Loader.vue'
+import PageHeader from '~/components/PageHeader.vue'
 
 export default Vue.extend({
+  components: { PageHeader, Loader },
   data () {
     return {
       state: 'empty' as 'empty' | 'loading' | 'loaded',
       querySent: null as string | null,
       query: '',
-      answers: [] as Array<{ a: Array<string>, index: number, score: number, feedback?: 'like' | 'dislike' }>
+      answers: [] as API.Answer[]
     }
   },
   computed: {},
@@ -101,8 +107,8 @@ export default Vue.extend({
     async submit () {
       try {
         this.state = 'loading'
-        const response = await this.$axios.get('https://diabeteqa.rj.r.appspot.com/qa/' + this.query)
-        this.answers = response.data.answers
+        const response = await this.$axios.$get<API.Routes.QA>('https://diabeteqa.rj.r.appspot.com/qa/' + this.query)
+        this.answers = response.answers
         this.querySent = this.query
         this.state = 'loaded'
       } catch (error) {

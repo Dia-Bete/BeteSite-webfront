@@ -1,4 +1,6 @@
-export default {
+import { NuxtConfig } from '@nuxt/types'
+
+const config: NuxtConfig = {
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -44,7 +46,10 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['~/plugins/vue-formulate'],
+  plugins: [
+    '~/plugins/vue-formulate',
+    '~/plugins/axiosSnakeToCamel'
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -100,3 +105,5 @@ export default {
     }
   }
 }
+
+export default config

@@ -1,15 +1,17 @@
+import type { TBCA } from '~/types/tbca'
+
 interface MealGoal {
   carbsGoal: number;
   proteinGoal: number;
   fatGoal: number;
 }
 
-interface MealPlans {
+export interface MealPlans {
   meal: MealGoal;
   snack: MealGoal;
 }
 
-interface Portion {
+export interface Portion {
   food: TBCA.Food,
   measure: string,
   quantity: number

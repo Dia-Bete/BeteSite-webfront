@@ -131,8 +131,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import type { Portion, MealGoal, MealPlans } from '~/types/meal'
+import PortionPicker from '~/components/PortionPicker.vue'
 
 export default Vue.extend({
+  components: { PortionPicker },
   data () {
     let meal
     const time = new Date().getHours()
