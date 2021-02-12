@@ -3,7 +3,7 @@
  */
 /* TODO: Refatorar como componentes? */
 .btn {
-  @apply block text-center px-2 transition-colors duration-150 rounded py-3;
+  @apply text-center px-2 transition-colors duration-150 rounded py-3;
 
   &:disabled {
     @apply cursor-not-allowed text-gray-700;

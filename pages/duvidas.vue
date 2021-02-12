@@ -18,18 +18,10 @@
           placeholder="O que você gostaria de saber?"
           class="w-full"
         />
-        <button
-          v-show="querySent === query && state==='loaded'"
-          type="reset"
-          class="w-0"
-          style="transform: translateX(calc(-26px - 1rem));"
-        >
-          <font-awesome-icon icon="backspace" class="text-blue-800" size="lg" />
-        </button>
       </div>
       <button
         :type="querySent === query? 'reset' : 'submit'"
-        class="btn rounded-md w-10 h-10 hover:shadow-xl hover:bg-white text-blue-800"
+        class="btn btn-search"
         :class="query ? 'bg-gray-100' : 'bg-gray-500'"
         :disabled="!query || state === 'loading'"
       >
@@ -41,24 +33,23 @@
       <Loader />
     </template>
     <template v-else-if="answers.length > 0">
-      <div class="grid grid-cols-1 grid-flow-row gap-4 overflow-hidden">
+      <div class="grid grid-cols-1 grid-flow-row gap-4">
         <div v-for="answer in answers" :key="answer.index" class="bg-white rounded shadow overflow-y-hidden">
-          <div class="px-4 pt-4 mb-6 flex flex-col gap-6">
+          <div class="px-4 pt-4 mb-3 flex flex-col gap-6">
             <blockquote class="flex flex-col gap-4">
               <p v-for="(paragraph, index) in answer.a" :key="index">
                 {{ paragraph }}
               </p>
             </blockquote>
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center text-sm">
               <h4 class="font-display">
                 Essa resposta é relevante?
               </h4>
               <button
                 v-for="(option, index) in [['SIM', 'like'], ['NÃO', 'dislike']]"
                 :key="index"
-                class="btn btn-tertiary rounded-lg"
-                :class="answer.feedback === option[1] && ['used']"
-                :disabled="answer.feedback"
+                class="rounded-lg px-4 py-1 font-medium"
+                :class="answer.feedback === option[1]? 'bg-blue-700 text-gray-200': 'text-gray-800'"
                 @click="feedback(option[1],answer.index)"
               >
                 {{ option[0] }}
@@ -81,8 +72,12 @@
 </template>
 
 <style lang="postcss" scoped>
-.used {
-  @apply bg-blue-700 text-gray-200
+.btn-search {
+  @apply rounded-md w-10 h-10 text-blue-800 flex items-center justify-center transition;
+
+  &:hover:not(:disabled) {
+    @apply shadow-lg bg-white;
+  }
 }
 </style>
 
@@ -93,7 +88,10 @@ import Loader from '~/components/Loader.vue'
 import PageHeader from '~/components/PageHeader.vue'
 
 export default Vue.extend({
-  components: { PageHeader, Loader },
+  components: {
+    PageHeader,
+    Loader
+  },
   data () {
     return {
       state: 'empty' as 'empty' | 'loading' | 'loaded',
