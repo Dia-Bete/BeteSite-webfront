@@ -11,18 +11,22 @@
     <!--      distribuição dos seus alimentos para evitar ganho de peso.-->
     <!--    </div>-->
 
-    <div class="flex flex-col items-stretch gap-6">
-      <div class="grid grid-flow-col place-items-center bg-blue-700 text-white rounded p-4 shadow-lg">
+    <div class="flex flex-col items-stretch gap-6 overflow-visible">
+      <aside v-show="overLimit" class="bg-red-700 text-white text-center rounded p-4 z-30 shadow-lg">
+        <p>
+          <em class="font-bold">Cuidado!</em> Sua refeição está acima da quantidade recomendada de
+          <strong class="font-bold">{{ overLimit }}.</strong>
+        </p>
+      </aside>
+      <div class="grid grid-flow-col place-items-center bg-blue-700 text-white rounded p-4 z-30 shadow-lg">
         <div
           v-for="item in goals"
           :key="item.label"
           class="flex flex-col items-center"
         >
           <p class="text-2xl">
-            {{ item.current.toFixed(0) }}/{{ item.limit.toFixed(0) }} <span
-              class="text-base"
-              style="margin-left: -0.75ch"
-            >g</span>
+            {{ item.current.toFixed(0) }}/{{ item.limit.toFixed(0) }}
+            <span class="text-base" style="margin-left: -0.75ch">g</span>
           </p>
           <p class="text-lg">
             {{ item.label }}
@@ -131,7 +135,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import type { Portion, MealGoal, MealPlans } from '~/types/meal'
+import type { MealGoal, MealPlans, Portion } from '~/types/meal'
 import PortionPicker from '~/components/PortionPicker.vue'
 
 export default Vue.extend({
@@ -209,6 +213,24 @@ export default Vue.extend({
         limit: limit.fatGoal,
         label: 'Gorduras'
       }]
+    },
+    overLimit (): string {
+      const overGoals = this.goals.reduce<string[]>((acc, g) => {
+        if (g.current > g.limit) {
+          acc.push(g.label.toLowerCase())
+        }
+        return acc
+      }, [])
+      switch (overGoals.length) {
+        case 2:
+          return overGoals.join(' e')
+        case 3: {
+          const last = overGoals.pop()
+          return `${overGoals.join(', ')} e ${last}`
+        }
+        default:
+          return ''
+      }
     }
   },
   methods: {
