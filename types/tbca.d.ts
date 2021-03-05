@@ -1,26 +1,22 @@
 export declare namespace TBCA {
   interface Measure {
-    carbs: number;
     description: string;
+    carbs: number;
     fat: number;
     monounsaturatedFatG: number;
     polyunsaturatedFatG: number;
     protein: number;
     saturatedFatG: number;
+    quantity: number;
     unit: string;
   }
 
-  interface Measures {
-    'Valor por 100 g': Measure;
-
-    [key: string]: Measure;
-  }
-
   interface Food {
-    Marca: string;
-    id: string;
+    marca: string;
+    identifier: string;
     label: string;
-    measures: Measures;
+    measures: Measure[];
     query: string;
+    popularity: number;
   }
 }

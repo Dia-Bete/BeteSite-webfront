@@ -9,7 +9,7 @@ input, select {
 input::placeholder,
 textarea::placeholder,
 select[data-placeholder-selected='true'] {
-  @apply text-gray-800;
+  @apply text-gray-900 font-medium;
 }
 
 .custom-radio {
