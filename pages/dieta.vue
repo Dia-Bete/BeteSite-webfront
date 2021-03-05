@@ -4,15 +4,8 @@
 
     <BioDataModal />
 
-    <!-- TODO: Integrar no design -->
-    <!--    <div v-show="overLimit" class="alert alert-warning alert-dismissible fade show" role="alert">-->
-    <!--      &lt;!&ndash; TODO: Mudar o wording talvez? &ndash;&gt;-->
-    <!--      <strong>Cuidado!</strong> Sua refeição ultrapassa o total de calorias que você deve consumir. Planeje a-->
-    <!--      distribuição dos seus alimentos para evitar ganho de peso.-->
-    <!--    </div>-->
-
     <div class="flex flex-col items-stretch gap-6 overflow-visible">
-      <aside v-show="overLimit" class="bg-red-700 text-white text-center rounded p-4 z-30 shadow-lg">
+      <aside v-show="overLimit" class="bg-red-700 text-white text-center rounded p-4 z-30 shadow-lg animate__animated animate__fadeInUp">
         <p>
           <em class="font-bold">Cuidado!</em> Sua refeição está acima da quantidade recomendada de
           <strong class="font-bold">{{ overLimit }}.</strong>
@@ -136,10 +129,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { MealGoal, MealPlans, Portion } from '~/types/meal'
-import PortionPicker from '~/components/PortionPicker.vue'
 
 export default Vue.extend({
-  components: { PortionPicker },
   data () {
     let meal
     const time = new Date().getHours()
@@ -176,18 +167,20 @@ export default Vue.extend({
   },
   computed: {
     fat (): number {
-      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].fat * portion.quantity, 0)
+      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures.find(v => v.unit === portion.measure)!.fat * portion.quantity, 0)
     },
     carbs (): number {
-      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].carbs * portion.quantity, 0)
+      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures.find(v => v.unit === portion.measure)!.carbs * portion.quantity, 0)
     },
     protein (): number {
-      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].protein * portion.quantity, 0)
+      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures.find(v => v.unit === portion.measure)!.protein * portion.quantity, 0)
     },
     goals (): { current: number, limit: number, label: string }[] {
       const limits: undefined | MealPlans = this.$store.state.bioData?.mealPlans
       if (!limits) {
-        return []
+        return [
+          { current: 0, limit: 0, label: '' }
+        ]
       }
 
       let limit

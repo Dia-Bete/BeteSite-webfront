@@ -84,16 +84,15 @@ export default Vue.extend({
   }),
   mounted () {
     window.addEventListener('click', this.checkClickOutside, { passive: true })
-    window.addEventListener('mouseleave', this.checkClickOutside, { passive: true })
+    this.$el.addEventListener('mouseleave', this.checkClickOutside, { passive: true })
   },
   beforeDestroy () {
     window.removeEventListener('click', this.checkClickOutside)
-    window.removeEventListener('mouseleave', this.checkClickOutside)
+    this.$el.removeEventListener('mouseleave', this.checkClickOutside)
   },
   methods: {
     checkClickOutside (ev: MouseEvent) {
-      const target = ev.target as HTMLElement
-      if (this.$el.contains(target)) {
+      if (!ev.relatedTarget && this.$el.contains(ev.target)) {
         return
       }
 
