@@ -1,7 +1,6 @@
 <template>
   <header
     class="fixed inset-x-0 top-0 z-40 bg-blue-200 py-3 pl-2 pr-4 flex flex-row flex-no-wrap items-center shadow-md"
-    @mouseleave="open = false"
   >
     <div class="inline-flex gap-2 items-center">
       <Logo class="animate__animated animate__slower" onmouseenter="this.classList.toggle('animate__tada')" />
@@ -27,7 +26,7 @@
         class="fixed lg:static shadow-lg lg:shadow-none w-32 lg:w-auto pt-2 pb-4 lg:py-0 lg:flex flex-col lg:flex-row-reverse lg:items-center text-right lg:text-center navlist animate__animated animate__faster animate__fadeInRightBig"
         :class="open? 'flex':'hidden'"
       >
-        <Divider></Divider>
+        <Divider />
         <li>
           <nuxt-link to="/cadastro" class="text-blue-900 font-semibold">
             Cadastro
@@ -76,10 +75,29 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Divider from '~/components/Divider.vue'
 
 export default Vue.extend({
+  components: { Divider },
   data: () => ({
     open: false
-  })
+  }),
+  mounted () {
+    window.addEventListener('click', this.checkClickOutside, { passive: true })
+    this.$el.addEventListener('mouseleave', this.checkClickOutside, { passive: true })
+  },
+  beforeDestroy () {
+    window.removeEventListener('click', this.checkClickOutside)
+    this.$el.removeEventListener('mouseleave', this.checkClickOutside)
+  },
+  methods: {
+    checkClickOutside (ev: MouseEvent) {
+      if (!ev.relatedTarget && this.$el.contains(ev.target)) {
+        return
+      }
+
+      this.open = false
+    }
+  }
 })
 </script>

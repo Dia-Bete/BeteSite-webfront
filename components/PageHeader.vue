@@ -1,5 +1,5 @@
 <template>
-  <header class="py-4 bg-white rounded-lg shadow-lg">
+  <header class="py-4 bg-white rounded-lg z-30 shadow-lg">
     <div class="px-4 flex flex-row justify-between items-center">
       <h2 class="font-display">
         {{ title }}

@@ -45,12 +45,12 @@
       <div v-if="form.sex === 'female'">
         <FormulateInput
           type="checkbox"
-          name="is_pregnant"
+          name="isPregnant"
           :label="`Estou grávid${form.pronoun || 'a(o)'}`"
         />
         <FormulateInput
           type="checkbox"
-          name="is_breast_feeding"
+          name="isBreastFeeding"
           label="Estou amamentando"
         />
       </div>
@@ -69,7 +69,7 @@
       </client-only>
       <FormulateInput
         type="select"
-        name="activity_level"
+        name="activityLevel"
         :options="{
           sedentary: 'Sedentário',
           lightly_active: 'Pouco Ativo',
@@ -84,7 +84,7 @@
       />
       <FormulateInput
         type="select"
-        name="is_diabetic"
+        name="isDiabetic"
         :options="{
           no_diabetic: 'Não',
           pre_diabetic: 'Pré-Diabetes',
@@ -112,7 +112,7 @@
       </div>
       <FormulateInput
         type="checkbox"
-        name="data_consent"
+        name="dataConsent"
         label="Autorizo o uso dos dados etc."
         validation="required"
       />
@@ -120,7 +120,7 @@
         <input
           class="btn btn-primary px-16"
           type="submit"
-          :disabled="!form.data_consent"
+          :disabled="!form.dataConsent"
           value="Cadastrar"
         />
       </div>
@@ -180,7 +180,7 @@ export default Vue.extend({
         },
         {
           type: 'password',
-          name: 'confirm_password',
+          name: 'confirmPassword',
           label: 'Confirme sua senha',
           validation: '^required|confirm:password',
           validationName: 'Confirmação de senha'
@@ -234,7 +234,7 @@ export default Vue.extend({
       schema_conditions: [
         {
           type: 'checkbox',
-          name: 'physically_inactive',
+          name: 'physicallyInactive',
           label: 'Sou portador de deficiência física'
         }
       ]
@@ -252,13 +252,8 @@ export default Vue.extend({
     async submit (data) {
       if (!confirm('Enviar estes dados?')) { return }
 
-      // TODO: Ajustar o backend para receber tudo em ints
-      const height = (parseFloat(data.height) / 100)
       try {
-        const response = await this.$axios.post('/signup_api', {
-          ...data,
-          height
-        })
+        const response = await this.$axios.post('/signup', data)
         if (response.status === 201) {
           alert('Conta criada com sucesso!')
           this.$router.push('login')

@@ -1,6 +1,9 @@
 <template>
   <section class="mx-auto w-full max-w-lg flex flex-col items-stretch gap-5">
-    <PageHeader title="Dúvidas - Perguntas e Respostas" description="Digite aqui sua pergunta ou dúvida e verifique as respostas da nossa assistente. Avalie se você está satisfeit(a) com a resposta recebida." />
+    <PageHeader
+      title="Dúvidas - Perguntas e Respostas"
+      description="Digite aqui sua pergunta ou dúvida e verifique as respostas da nossa assistente. Avalie se você está satisfeit(a) com a resposta recebida."
+    />
     <form
       class="p-4 bg-blue-700 rounded shadow-md flex flex-row gap-2 justify-between items-center"
       @submit.prevent="submit"
@@ -15,48 +18,38 @@
           placeholder="O que você gostaria de saber?"
           class="w-full"
         />
-        <button
-          v-show="querySent === query && state==='loaded'"
-          type="reset"
-          class="w-0"
-          style="transform: translateX(calc(-26px - 1rem));"
-        >
-          <font-awesome-icon icon="backspace" class="text-blue-800" size="lg" />
-        </button>
       </div>
       <button
-        :type="querySent == query? 'reset' : 'submit'"
-        class="btn rounded-md w-10 h-10 hover:shadow-xl hover:bg-white text-blue-800"
+        :type="querySent === query? 'reset' : 'submit'"
+        class="btn btn-search"
         :class="query ? 'bg-gray-100' : 'bg-gray-500'"
         :disabled="!query || state === 'loading'"
       >
-        <font-awesome-icon v-show="querySent != query || state!='loaded'" icon="search" size="lg" />
-        <font-awesome-icon v-show="querySent == query && state=='loaded'" icon="backspace" />
+        <font-awesome-icon v-show="querySent !== query || state!=='loaded'" icon="search" size="lg" />
+        <font-awesome-icon v-show="querySent === query && state==='loaded'" icon="backspace" />
       </button>
     </form>
     <template v-if="state === 'loading'">
-      <Loader>
-      </Loader>
+      <Loader />
     </template>
     <template v-else-if="answers.length > 0">
-      <div class="grid grid-cols-1 grid-flow-row gap-4 overflow-hidden">
+      <div class="grid grid-cols-1 grid-flow-row gap-4">
         <div v-for="answer in answers" :key="answer.index" class="bg-white rounded shadow overflow-y-hidden">
-          <div class="px-4 pt-4 mb-6 flex flex-col gap-6">
+          <div class="px-4 pt-4 mb-3 flex flex-col gap-6">
             <blockquote class="flex flex-col gap-4">
               <p v-for="(paragraph, index) in answer.a" :key="index">
                 {{ paragraph }}
               </p>
             </blockquote>
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center text-sm">
               <h4 class="font-display">
                 Essa resposta é relevante?
               </h4>
               <button
                 v-for="(option, index) in [['SIM', 'like'], ['NÃO', 'dislike']]"
                 :key="index"
-                class="btn btn-tertiary rounded-lg"
-                :class="answer.feedback === option[1] && ['used']"
-                :disabled="answer.feedback"
+                class="rounded-lg px-4 py-1 font-medium"
+                :class="answer.feedback === option[1]? 'bg-blue-700 text-gray-200': 'text-gray-800'"
                 @click="feedback(option[1],answer.index)"
               >
                 {{ option[0] }}
@@ -79,21 +72,32 @@
 </template>
 
 <style lang="postcss" scoped>
-.used {
-  @apply bg-blue-700 text-gray-200
+.btn-search {
+  @apply rounded-md w-10 h-10 text-blue-800 flex items-center justify-center transition;
+
+  &:hover:not(:disabled) {
+    @apply shadow-lg bg-white;
+  }
 }
 </style>
 
 <script lang="ts">
 import Vue from 'vue'
+import { API } from '~/types/api'
+import Loader from '~/components/Loader.vue'
+import PageHeader from '~/components/PageHeader.vue'
 
 export default Vue.extend({
+  components: {
+    PageHeader,
+    Loader
+  },
   data () {
     return {
       state: 'empty' as 'empty' | 'loading' | 'loaded',
       querySent: null as string | null,
       query: '',
-      answers: [] as Array<{ a: Array<string>, index: number, score: number, feedback?: 'like' | 'dislike' }>
+      answers: [] as API.Answer[]
     }
   },
   computed: {},
@@ -101,8 +105,8 @@ export default Vue.extend({
     async submit () {
       try {
         this.state = 'loading'
-        const response = await this.$axios.get('https://diabeteqa.rj.r.appspot.com/qa/' + this.query)
-        this.answers = response.data.answers
+        const response = await this.$axios.$get<API.Routes.QA>('https://diabeteqa.rj.r.appspot.com/qa/' + this.query)
+        this.answers = response.answers
         this.querySent = this.query
         this.state = 'loaded'
       } catch (error) {

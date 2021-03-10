@@ -25,7 +25,7 @@ module.exports = {
       'layouts/**/*.vue',
       'pages/**/*.vue',
       'plugins/**/*.js',
-      'nuxt.config.js'
+      'nuxt.config.ts'
     ]
   }
 }

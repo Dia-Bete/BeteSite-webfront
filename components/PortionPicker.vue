@@ -3,7 +3,19 @@
     :show="show"
     describedby="portion-modal-header"
   >
-    <form class="bg-white w-full max-w-md opacity-100 rounded-lg overflow-hidden flex flex-col shadow-2xl" novalidate @submit.prevent>
+    <Loader v-if="$fetchState.pending" />
+    <div v-else-if="$fetchState.error">
+      <p class="bg-white rounded shadow p-4 text-center">
+        Perdão, houve um erro na comunicação com o servidor.
+        <font-awesome-icon icon="frown" class="text-blue-600" size="lg" />
+      </p>
+    </div>
+    <form
+      v-else
+      class="bg-white w-full max-w-md opacity-100 rounded-lg overflow-hidden flex flex-col shadow-2xl"
+      novalidate
+      @submit.prevent
+    >
       <header id="portion-modal-header" class="bg-blue-100 text-blue-800 p-4 font-display">
         Adicionando uma porção de:
       </header>
@@ -17,7 +29,7 @@
           autocomplete="off"
         />
         <ul class="bg-blue-100 px-3 flex flex-col">
-          <li v-for="suggestion in searchSuggestions" :key="suggestion.id">
+          <li v-for="suggestion in searchSuggestions" :key="suggestion.identifier">
             <button class="py-3" type="button" @click.prevent="selected = suggestion">
               {{ suggestion.query }}
             </button>
@@ -57,15 +69,19 @@
 </template>
 
 <style lang="postcss" scoped>
-  .submit {
-    @apply px-8 font-display font-semibold rounded-lg;
-  }
+.submit {
+  @apply px-8 font-display font-semibold rounded-lg;
+}
 </style>
 
 <script lang="ts">
 import Vue from 'vue'
+import type { TBCA } from '~/types/tbca'
+import type { Portion } from '~/types/meal'
+import type { API } from '~/types/api'
 
 export default Vue.extend({
+  fetchDelay: 1000,
   props: {
     show: {
       type: [Boolean, Object],
@@ -80,7 +96,7 @@ export default Vue.extend({
     measureQuantity: 1
   }),
   async fetch () {
-    const response = (await this.$axios.get<TBCA.Route>('/tbca')).data
+    const response = await this.$axios.$get<API.Routes.TBCA>('/tbca')
     this.tbca = response.tbca
   },
   computed: {
@@ -88,8 +104,10 @@ export default Vue.extend({
       if (!this.search) { return [] }
 
       const query = this.search.toLowerCase()
-      const includes = this.tbca?.filter(item => item.label.toLocaleLowerCase().includes(query))?.slice(0, 4)
-      return includes || []
+      const includes: TBCA.Food[] = this.tbca?.filter(item => item.label.toLocaleLowerCase().includes(query)) || []
+      return includes
+        .sort((a, b) => +(a.popularity > b.popularity) || +(a.popularity === b.popularity) - 1)
+        .splice(0, 4)
     }
   },
   watch: {
