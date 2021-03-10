@@ -1,6 +1,6 @@
 <template>
   <section class="mx-auto w-full max-w-lg flex flex-col items-stretch gap-8 overflow-visible">
-    <PageHeader title="Dieta - Contador de Carboidratos" />
+    <PageHeader title="Dieta - Calculadora" />
 
     <BioDataModal />
 
@@ -79,7 +79,7 @@
           ></PortionPicker>
           <Divider />
           <button class="btn btn-tertiary" type="button" @click="portionPicker = true">
-            Adicionar Porção
+            Adicione os alimentos
           </button>
         </fieldset>
         <fieldset class="box p-4 grid grid-cols-2 grid-rows-2 col-gap-8 row-gap-4">

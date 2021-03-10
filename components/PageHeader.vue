@@ -32,10 +32,7 @@
 import Vue from 'vue'
 
 const lorem =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n' +
-  'dolore magna aliqua.\n' +
-  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n' +
-  'consequat.'
+  'Planeje sua dieta adicionando os alimentos que comeu e calcule as calorias'
 
 export default Vue.extend({
   props: {
