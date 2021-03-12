@@ -92,7 +92,7 @@ export default Vue.extend({
     tbca: null as TBCA.Food[] | null,
     search: '',
     selected: null as null | TBCA.Food,
-    measureType: '',
+    measureType: '100G',
     measureQuantity: 1
   }),
   async fetch () {

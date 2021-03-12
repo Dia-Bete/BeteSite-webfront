@@ -11,11 +11,17 @@ export declare namespace TBCA {
     unit: string;
   }
 
+  interface Measures {
+    '100G': Measure;
+
+    [key: string]: Measure
+  }
+
   interface Food {
     marca: string;
     identifier: string;
     label: string;
-    measures: Measure[];
+    measures: Measures;
     query: string;
     popularity: number;
   }

@@ -37,9 +37,9 @@
               <tr
                 v-for="(portion, index) in form.portions"
                 :key="index"
-                :class="{'bg-gray-200': portionClicked === index}"
-                @click="portionClicked = index"
-                @mouseleave="portionClicked = null"
+                class="hover:bg-gray-100 cursor-pointer"
+                :class="{'hover:bg-gray-200': portionClicked === index}"
+                @click="portionClicked = portionClicked!==null ? null : index"
               >
                 <td class="py-3 pl-4">
                   {{ portion.food.label }}
@@ -47,21 +47,20 @@
                 <td
                   v-if="portionClicked !== index"
                   class="border-l-2 border-gray-400 text-right pr-4"
-                  style="width: 10ch"
+                  style="width: 11ch"
                 >
-                  {{ `${portion.quantity} x ${portion.measure}${portion.food.measures[portion.measure].unit}` }}
+                  {{ `${portion.quantity} x ${portion.measure.toLowerCase()}` }}
                 </td>
                 <td v-else class="border-l-2 border-gray-400 pr-1" style="width: 10ch">
                   <div class="w-full flex justify-evenly">
-                    <button>
+                    <button type="button" @click.prevent="portionPicker = portion">
                       <font-awesome-icon
                         icon="pen-square"
                         class="text-gray-700 text-3xl"
-                        @click="portionPicker = portion"
                       />
                     </button>
-                    <button>
-                      <font-awesome-icon icon="minus-square" class="text-red-700 text-3xl" @click="deleteFood(index)" />
+                    <button type="reset" @click.prevent="deleteFood(index)">
+                      <font-awesome-icon icon="minus-square" class="text-red-700 text-3xl" />
                     </button>
                   </div>
                 </td>
@@ -76,7 +75,7 @@
           ></PortionPicker>
           <Divider />
           <button class="btn btn-tertiary" type="button" @click="portionPicker = true">
-            Adicione os alimentos
+            Adicionar alimento
           </button>
         </fieldset>
         <fieldset class="box p-4 grid grid-cols-2 grid-rows-2 col-gap-8 row-gap-4">
@@ -167,13 +166,13 @@ export default Vue.extend({
   },
   computed: {
     fat (): number {
-      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures.find(v => v.unit === portion.measure)!.fat * portion.quantity, 0)
+      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].fat * portion.quantity, 0)
     },
     carbs (): number {
-      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures.find(v => v.unit === portion.measure)!.carbs * portion.quantity, 0)
+      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].carbs * portion.quantity, 0)
     },
     protein (): number {
-      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures.find(v => v.unit === portion.measure)!.protein * portion.quantity, 0)
+      return this.form.portions.reduce((acc, portion) => acc + portion.food.measures[portion.measure].protein * portion.quantity, 0)
     },
     goals (): { current: number, limit: number, label: string }[] {
       const limits: undefined | MealPlans = this.$store.state.bioData?.mealPlans
@@ -215,6 +214,8 @@ export default Vue.extend({
         return acc
       }, [])
       switch (overGoals.length) {
+        case 1:
+          return overGoals[0]
         case 2:
           return overGoals.join(' e')
         case 3: {

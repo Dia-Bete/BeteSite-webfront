@@ -4,7 +4,7 @@
     <main
       class="absolute w-full mt-16 pt-8 px-4 flex flex-col place-content-start place-items-start flex-no-wrap overflow-y-auto"
     >
-      <Nuxt keep-alive />
+      <Nuxt keep-alive :keep-alive-props="{ include: ['BioDataModal', 'PortionPicker'] }" />
     </main>
   </div>
 </template>
