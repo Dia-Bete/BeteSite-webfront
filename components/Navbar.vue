@@ -58,7 +58,7 @@
   top: theme('spacing.16');
 
   & li {
-    @apply whitespace-no-wrap font-medium font-display text-lg pr-6;
+    @apply whitespace-nowrap font-medium font-display text-lg pr-6;
   }
 
   & .nuxt-link-active {

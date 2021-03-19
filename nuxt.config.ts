@@ -38,7 +38,6 @@ const config: NuxtConfig = {
    ** Global CSS
    */
   css: [
-    '@/assets/css/fonts.css',
     '@/assets/css/buttons.css',
     '@/assets/css/forms.css'
   ],
@@ -69,6 +68,7 @@ const config: NuxtConfig = {
    ** Nuxt.js modules
    */
   modules: [
+    '@nuxtjs/google-fonts',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios'
     // Doc: https://github.com/nuxt/content
