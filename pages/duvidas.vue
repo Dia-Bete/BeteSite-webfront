@@ -45,18 +45,20 @@
               <h4 class="font-display">
                 Essa resposta é relevante?
               </h4>
-              <button
-                v-for="(option, index) in [['SIM', 'like'], ['NÃO', 'dislike']]"
-                :key="index"
-                class="rounded-lg px-4 py-1 font-medium"
-                :class="answer.feedback === option[1]? 'bg-blue-700 text-gray-200': 'text-gray-800'"
-                @click="feedback(option[1],answer.index)"
-              >
-                {{ option[0] }}
-              </button>
+              <div class="flex justify-end gap-4">
+                <button
+                  v-for="(option, index) in [['SIM', 'like'], ['NÃO', 'dislike']]"
+                  :key="index"
+                  class="rounded-lg px-4 py-1 font-medium"
+                  :class="answer.feedback === option[1]? 'bg-blue-600 text-gray-200': 'text-gray-800'"
+                  @click="feedback(option[1],answer.index)"
+                >
+                  {{ option[0] }}
+                </button>
+              </div>
             </div>
           </div>
-          <footer class="bg-blue-200 px-4 py-3 font-display text-blue-900 text-sm">
+          <footer class="bg-blue-200 px-4 py-3 font-display text-blue-900 text-sm shadow-inner leading-none">
             Confiança nesta resposta: {{ answer.score.toFixed(2).toLocaleString() }}
           </footer>
         </div>

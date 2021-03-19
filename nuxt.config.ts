@@ -86,6 +86,9 @@ const config: NuxtConfig = {
    ** See https://content.nuxtjs.org/configuration
    */
   // content: {},
+  tailwindcss: {
+    jit: true
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
