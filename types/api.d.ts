@@ -3,7 +3,7 @@ import type { TBCA as TBCATable } from '~/types/tbca'
 export declare namespace API {
 
   interface Answer {
-    a: Array<string>,
+    a: string,
     index: number,
     score: number,
     feedback?: 'like' | 'dislike'
@@ -24,7 +24,7 @@ export declare namespace API {
     }
 
     interface QA {
-      answers: Answer[]
+      candidates: Answer[]
     }
   }
 }
