@@ -37,9 +37,7 @@
         <div v-for="answer in answers" :key="answer.index" class="bg-white rounded shadow overflow-y-hidden">
           <div class="px-4 pt-4 mb-3 flex flex-col gap-6">
             <blockquote class="flex flex-col gap-4">
-              <p v-for="(paragraph, index) in answer.a" :key="index">
-                {{ paragraph }}
-              </p>
+              {{ answer.a }}
             </blockquote>
             <div class="flex justify-between items-center text-sm">
               <h4 class="font-display">
@@ -107,8 +105,8 @@ export default Vue.extend({
     async submit () {
       try {
         this.state = 'loading'
-        const response = await this.$axios.$get<API.Routes.QA>('https://diabeteqa.rj.r.appspot.com/qa/' + this.query)
-        this.answers = response.answers
+        const response = await this.$axios.$get<API.Routes.QA>('https://beteqa-uwmufaw5wq-rj.a.run.app/?api_key=api_test&question=' + this.query)
+        this.answers = response.candidates
         this.querySent = this.query
         this.state = 'loaded'
       } catch (error) {
